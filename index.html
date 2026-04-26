@@ -94,10 +94,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .vtit{font-weight:700;font-size:15px;line-height:1.4;margin-bottom:6px;cursor:pointer;transition:color .15s;color:var(--text)}
 .vtit:hover{color:var(--accent)}
 
-.vact{display:flex;gap:6px;align-items:center}
+.vact-wrap{display:flex;flex-direction:column;gap:8px}.vact{display:flex;gap:6px;align-items:center}
 .btn-ed{background:#fff;border:2px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
 .btn-ed:hover{background:#eef2ff}
-.fsel{flex:1;background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 8px;font-size:12px;font-family:inherit;cursor:pointer;outline:none;min-width:0}
+.fsel{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:10px;padding:8px 10px;font-size:13px;font-family:inherit;cursor:pointer;outline:none}
 .fsel:focus{border-color:var(--accent)}
 .btn-dl{background:#fff;border:2px solid var(--red);color:var(--red);border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;flex-shrink:0}
 .btn-dl:hover{background:#fff0f1}
@@ -398,11 +398,13 @@ function renderVideos(){
     h+='<div class="vc" draggable="true" ondragstart="onDS(event,\''+v.id+'\')" ondragend="onDE(event)" ondragover="onDO(event,\''+v.id+'\')" ondragleave="onDL(event)" ondrop="onDrop(event,\''+v.id+'\')">'
       +'<div class="vb">'
       +'<div class="vtit" onclick="openVideo(\''+v.id+'\',\''+su+'\')">'+esc(v.title)+'</div>'
+      +'<div class="vact-wrap">'
       +'<div class="vact">'
-      +'<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'
       +'<button class="btn-ed" onclick="editTitle(\''+v.id+'\')">編集</button>'
       +'<button class="btn-dl" onclick="deleteVideo(\''+v.id+'\')">削除</button>'
-      +'</div></div></div>';
+      +'</div>'
+      +'<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'
+      +'</div>'
   });
   c.innerHTML=h;
 }
