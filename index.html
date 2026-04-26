@@ -4,84 +4,93 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VideoVault</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap');
 :root{--bg:#0d0e12;--bg2:#13141a;--bg3:#1c1d25;--border:#2b2c37;--accent:#f0c040;--accent2:#ff6b35;--text:#e4e5ee;--muted:#7a7b8e;--red:#ff4757;--green:#2ed573;--r:10px;--sh:0 6px 28px rgba(0,0,0,.55)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 #s-auth{display:none;align-items:center;justify-content:center;min-height:100vh;padding:20px}
 #s-app{display:none;flex-direction:column;min-height:100vh}
-.abox{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:40px 32px;width:100%;max-width:400px;box-shadow:var(--sh)}
+.abox{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:44px 36px;width:100%;max-width:380px;box-shadow:var(--sh)}
 .logo{font-size:26px;font-weight:900;text-align:center;margin-bottom:6px;letter-spacing:-1px}
 .logo em{color:var(--accent);font-style:normal}
 .asub{text-align:center;color:var(--muted);margin-bottom:28px;font-size:13px}
-.abox input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:13px 14px;font-size:15px;font-family:inherit;margin-bottom:12px;outline:none;transition:border-color .2s;display:block;-webkit-appearance:none}
+.abox input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:10px;outline:none;transition:border-color .2s;display:block}
 .abox input:focus{border-color:var(--accent)}
 .abox input::placeholder{color:var(--muted)}
-.abtns{display:flex;gap:8px;margin-top:4px}
-.btn-y,.btn-n{flex:1;border-radius:8px;padding:14px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;border:none;-webkit-appearance:none}
-.btn-y{background:var(--accent);color:#000}.btn-y:disabled{opacity:.6;cursor:not-allowed}
-.btn-n{background:transparent;color:var(--text);border:1px solid var(--border)!important}.btn-n:disabled{opacity:.6;cursor:not-allowed}
-.amsg{border-radius:8px;padding:12px 14px;font-size:13px;margin-top:14px;display:none;line-height:1.6;word-break:break-all}
-.amsg.err{background:#ff475720;border:1px solid var(--red);color:var(--red)}
-.amsg.ok{background:#2ed57320;border:1px solid var(--green);color:var(--green)}
-.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.abtns{display:flex;gap:8px;margin-top:8px}
+.btn-y,.btn-n{flex:1;border-radius:8px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;border:none;transition:opacity .2s}
+.btn-y{background:var(--accent);color:#000}.btn-y:hover{opacity:.85}.btn-y:disabled{opacity:.5;cursor:not-allowed}
+.btn-n{background:transparent;color:var(--text);border:1px solid var(--border)!important}.btn-n:hover{border-color:var(--accent)!important}.btn-n:disabled{opacity:.5;cursor:not-allowed}
+.amsg{border-radius:7px;padding:10px 13px;font-size:13px;margin-top:12px;display:none;word-break:break-all}
+.amsg.err{background:#ff475722;border:1px solid var(--red);color:var(--red)}
+.amsg.ok{background:#2ed57322;border:1px solid var(--green);color:var(--green)}
+.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
 .hd .logo{font-size:17px}.hd-sp{flex:1}
-.hd-em{color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px}
-.btn-lo{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px;white-space:nowrap;-webkit-appearance:none}
+.hd-em{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+.btn-lo{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;white-space:nowrap}
+.btn-lo:hover{border-color:var(--red);color:var(--red)}
 .main{flex:1;display:flex;max-width:1200px;width:100%;margin:0 auto;padding:16px;gap:16px}
 .sb{width:200px;flex-shrink:0}.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
 .ptitle{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-bottom:10px}
 #fl{display:flex;flex-direction:column;gap:3px}
-.fc{background:transparent;border:none;color:var(--text);text-align:left;padding:7px 10px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;display:flex;align-items:center;gap:6px;width:100%;-webkit-appearance:none}
-.fc.on{background:var(--bg3);color:var(--accent)}
+.fc{background:transparent;border:none;color:var(--text);text-align:left;padding:7px 10px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;transition:background .15s;display:flex;align-items:center;gap:6px;width:100%}
+.fc:hover{background:var(--bg3)}.fc.on{background:var(--bg3);color:var(--accent)}
 .fcnt{margin-left:auto;background:var(--bg3);border-radius:10px;padding:0 7px;font-size:11px;color:var(--muted)}.fc.on .fcnt{color:var(--accent)}
 .fr{display:flex;align-items:center;gap:2px}
-.fdel{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px 8px;border-radius:4px;-webkit-appearance:none}
-.btn-af{width:100%;background:var(--bg3);border:1px dashed var(--border);color:var(--muted);border-radius:6px;padding:8px;cursor:pointer;font-family:inherit;font-size:12px;margin-top:8px;-webkit-appearance:none}
+.fdel{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:4px 7px;border-radius:4px}.fdel:hover{color:var(--red)}
+.btn-af{width:100%;background:var(--bg3);border:1px dashed var(--border);color:var(--muted);border-radius:6px;padding:8px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;margin-top:8px}
+.btn-af:hover{border-color:var(--accent);color:var(--accent)}
 .ct{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
 .af{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;display:flex;gap:8px;flex-wrap:wrap}
-.af input{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;outline:none;min-width:0;-webkit-appearance:none}
+.af input{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;min-width:0}
 .af input:focus{border-color:var(--accent)}.af input::placeholder{color:var(--muted)}
 .af .iu{flex:2}.af .it{flex:1.2}
-.btn-add{background:var(--accent);color:#000;border:none;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;white-space:nowrap;flex-shrink:0;-webkit-appearance:none}
+.btn-add{background:var(--accent);color:#000;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;white-space:nowrap;transition:opacity .2s;flex-shrink:0}
+.btn-add:hover{opacity:.85}
 .tb{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.sw{position:relative;flex:1;min-width:140px}
-.sw input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px 8px 30px;font-size:13px;font-family:inherit;outline:none;-webkit-appearance:none}
-.sw input::placeholder{color:var(--muted)}
-.si{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:13px}
-.sbs{display:flex;gap:3px}
-.sbb{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 10px;cursor:pointer;font-family:inherit;font-size:12px;-webkit-appearance:none}
-.sbb.on{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
-.cbadge{color:var(--muted);font-size:12px;white-space:nowrap}
-.btn-ex{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 10px;cursor:pointer;font-family:inherit;font-size:12px;white-space:nowrap;-webkit-appearance:none}
-#vl{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .18s,box-shadow .18s;cursor:grab}
-.vc:hover{transform:translateY(-2px);box-shadow:var(--sh)}
-.vc.drag{opacity:.35}.vc.over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-
-
-
-
-.vb{padding:10px}
-.vtit{font-weight:700;font-size:13px;line-height:1.4;margin-bottom:5px;cursor:pointer;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.sw{position:relative;flex:1;min-width:130px}
+.sw input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px 8px 30px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
+.sw input:focus{border-color:var(--accent)}.sw input::placeholder{color:var(--muted)}
+.si{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:13px}
+.sbs{display:flex;gap:4px}
+.sb-btn{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:6px 10px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s}
+.sb-btn:hover{border-color:var(--accent)}.sb-btn.on{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+.cbadge{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.btn-ex{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:6px 10px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;white-space:nowrap}
+.btn-ex:hover{border-color:var(--accent2);color:var(--accent2)}
+#vl{display:flex;flex-direction:column;gap:8px}
+.vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .18s,box-shadow .18s;cursor:grab}
+.vc:hover{border-color:#3a3b48;box-shadow:var(--sh)}
+.vc.drag{opacity:.35;cursor:grabbing}.vc.over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.vb{padding:12px}
+.vtit{font-weight:700;font-size:14px;line-height:1.4;margin-bottom:6px;cursor:pointer;transition:color .15s}
 .vtit:hover{color:var(--accent)}
-.vmeta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:5px;font-size:11px;color:var(--muted)}
-.vurl{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:8px}
-.vact{display:flex;gap:5px;align-items:center}
-.btn-ed{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:inherit;-webkit-appearance:none}
-.fsel{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:4px 6px;font-size:11px;font-family:inherit;outline:none;min-width:0}
-.btn-dl{background:transparent;border:1px solid transparent;color:var(--muted);border-radius:5px;padding:4px 8px;font-size:13px;cursor:pointer;font-family:inherit;flex-shrink:0;-webkit-appearance:none}
-.btn-dl:hover{color:var(--red)}
-.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+.vmeta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.vurl{font-size:11px;color:var(--accent2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:10px;cursor:pointer}
+.vurl:hover{text-decoration:underline}
+.vact{display:flex;gap:6px;align-items:center}
+.btn-ed{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.btn-ed:hover{border-color:var(--accent);color:var(--accent)}
+.fsel{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:5px 6px;font-size:12px;font-family:inherit;cursor:pointer;outline:none;min-width:0}
+.fsel:focus{border-color:var(--accent)}
+.btn-dl{background:transparent;border:1px solid transparent;color:var(--muted);border-radius:5px;padding:5px 8px;font-size:14px;cursor:pointer;font-family:inherit;transition:all .15s;flex-shrink:0}
+.btn-dl:hover{color:var(--red);border-color:var(--red)}
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty-ic{font-size:46px;margin-bottom:12px;opacity:.3}
-#ta{position:fixed;bottom:16px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
-.toast{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 14px;font-size:13px;max-width:260px;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;box-shadow:var(--sh)}
+#ta{position:fixed;bottom:22px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
+.toast{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;max-width:260px;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;box-shadow:var(--sh)}
 .toast.show{opacity:1;transform:translateX(0)}.t-ok{border-left:3px solid var(--green)}.t-warn{border-left:3px solid var(--accent)}.t-err{border-left:3px solid var(--red)}
 @media(max-width:640px){
   .main{flex-direction:column;padding:10px}
-  .sb{width:100%}#fl{flex-direction:row;flex-wrap:wrap}
-  .af{flex-direction:column}.af input,.af .iu,.af .it{width:100%;flex:none}
+  .sb{width:100%}
+  #fl{flex-direction:row;flex-wrap:wrap}
+  .af{flex-direction:column}
+  .af input,.btn-add{width:100%}
+  .sbs{flex-wrap:wrap}
 }
 </style>
 </head>
@@ -91,8 +100,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
   <div class="abox">
     <div class="logo">Video<em>Vault</em></div>
     <div class="asub">お気に入り動画リスト</div>
-    <input id="f-em" type="email"    placeholder="メールアドレス" autocomplete="email" inputmode="email">
-    <input id="f-pw" type="password" placeholder="パスワード（6文字以上）">
+    <input id="f-em" type="email" placeholder="メールアドレス" autocomplete="email">
+    <input id="f-pw" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password">
     <div class="abtns">
       <button class="btn-y" id="b-li" onclick="doLogin()">ログイン</button>
       <button class="btn-n" id="b-su" onclick="doSignup()">新規登録</button>
@@ -118,314 +127,228 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     </aside>
     <div class="ct">
       <div class="af">
-        <input id="i-url" class="iu" type="url"  placeholder="動画URL（YouTube / ニコ動など）">
+        <input id="i-url" class="iu" type="url" placeholder="動画URL（YouTube / ニコ動など）">
         <input id="i-ttl" class="it" type="text" placeholder="タイトル（省略可）">
         <button class="btn-add" onclick="addVideo()">＋ 追加</button>
       </div>
       <div class="tb">
         <div class="sw"><span class="si">🔍</span><input id="i-q" type="text" placeholder="検索…" oninput="onSearch(event)"></div>
         <div class="sbs">
-          <button class="sbb on" id="sd-date"    onclick="setSort('date')">日付順</button>
-          <button class="sbb"    id="sd-popular" onclick="setSort('popular')">人気順</button>
-          <button class="sbb"    id="sd-title"   onclick="setSort('title')">タイトル順</button>
+          <button class="sb-btn on" id="sd-date"    onclick="setSort('date')">日付順</button>
+          <button class="sb-btn"    id="sd-popular" onclick="setSort('popular')">人気順</button>
+          <button class="sb-btn"    id="sd-title"   onclick="setSort('title')">タイトル順</button>
         </div>
         <span class="cbadge" id="cbadge">0件</span>
         <button class="btn-ex" onclick="doExport()">⬇ 出力</button>
       </div>
-      <div id="vl"><div class="empty"><div class="empty-ic">🎬</div><p>動画を追加してください</p></div></div>
+      <div id="vl">
+        <div class="empty"><div class="empty-ic">🎬</div><p>動画を追加してください</p></div>
+      </div>
     </div>
   </div>
 </div>
+
 <div id="ta"></div>
 
 <script>
-// ============================================================
-// 設定
-// ============================================================
-var API_KEY   = "AIzaSyBGRXqgK2qsHZD4wLpgIufRvdhoQXulits";
-var PROJECT   = "video-favorites-4d748";
-var AUTH_URL  = "https://identitytoolkit.googleapis.com/v1/accounts:";
-var FS_URL    = "https://firestore.googleapis.com/v1/projects/" + PROJECT + "/databases/(default)/documents/";
+firebase.initializeApp({
+  apiKey:"AIzaSyBGRXqgK2qsHZD4wLpgIufRvdhoQXulits",
+  authDomain:"video-favorites-4d748.firebaseapp.com",
+  projectId:"video-favorites-4d748",
+  storageBucket:"video-favorites-4d748.firebasestorage.app",
+  messagingSenderId:"219810409937",
+  appId:"1:219810409937:web:25e9b3457b78bf851d04f0"
+});
+var AUTH=firebase.auth();
+var DB=firebase.firestore();
+var STS=firebase.firestore.FieldValue.serverTimestamp;
 
-// ============================================================
-// 状態
-// ============================================================
-var TOKEN     = null;   // Firebase IDトークン
-var UID       = null;
-var EMAIL     = null;
-var REFRESH   = null;
-var videos    = [], folders = [];
-var pollTimer = null;
-var curF = null, q = "", sort = "date", dragId = null;
-var vEtags = {}, fEtags = {};
+var me=null,videos=[],folders=[];
+var unsubV=null,unsubF=null;
+var curF=null,q="",sort="date",dragId=null;
 
-// ============================================================
-// 画面
-// ============================================================
-function showAuth() {
-  document.getElementById("s-auth").style.cssText = "display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px";
-  document.getElementById("s-app").style.display = "none";
+function showAuth(){
+  document.getElementById("s-auth").style.cssText="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px";
+  document.getElementById("s-app").style.display="none";
 }
-function showApp() {
-  document.getElementById("s-auth").style.display = "none";
-  document.getElementById("s-app").style.cssText = "display:flex;flex-direction:column;min-height:100vh";
-}
-function setBusy(on) {
-  G("b-li").disabled = on;
-  G("b-su").disabled = on;
-  G("b-li").textContent = on ? "処理中…" : "ログイン";
-}
-function showMsg(txt, type) {
-  var el = G("amsg");
-  el.textContent = txt;
-  el.className = "amsg " + (type || "err");
-  el.style.display = "block";
-}
-function hideMsg() { G("amsg").style.display = "none"; }
-
-// ============================================================
-// Auth — Firebase REST API（SDKなし）
-// ============================================================
-function authPost(action, body) {
-  return fetch(AUTH_URL + action + "?key=" + API_KEY, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  }).then(function(r) { return r.json(); });
+function showApp(){
+  document.getElementById("s-auth").style.display="none";
+  document.getElementById("s-app").style.cssText="display:flex;flex-direction:column;min-height:100vh";
 }
 
-function doLogin() {
-  var email = G("f-em").value.trim();
-  var pw    = G("f-pw").value;
-  if (!email || !pw) return showMsg("メールとパスワードを入力してください");
-  setBusy(true);
-  showMsg("認証中…", "ok");
-  authPost("signInWithPassword", { email: email, password: pw, returnSecureToken: true })
-    .then(function(d) {
-      if (d.error) {
-        setBusy(false);
-        showMsg(authErr(d.error.message) + "\n[" + d.error.message + "]");
-        return;
-      }
-      onLoginSuccess(d);
-    })
-    .catch(function(e) {
-      setBusy(false);
-      showMsg("通信エラー: " + e.message);
-    });
+AUTH.onAuthStateChanged(function(user){
+  me=user;
+  if(user){
+    document.getElementById("hd-em").textContent=user.email;
+    setBtnLoading(false);
+    hideMsg();
+    showApp();
+    startListen();
+  } else {
+    stopListen();
+    showAuth();
+  }
+});
+
+function doLogin(){
+  var email=document.getElementById("f-em").value.trim();
+  var pw=document.getElementById("f-pw").value;
+  if(!email||!pw) return showMsg("メールとパスワードを入力してください","err");
+  setBtnLoading(true);
+  showMsg("認証中…","ok");
+  AUTH.signInWithEmailAndPassword(email,pw)
+    .then(function(r){ console.log("OK",r.user.email); })
+    .catch(function(e){ setBtnLoading(false); showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
+}
+function doSignup(){
+  var email=document.getElementById("f-em").value.trim();
+  var pw=document.getElementById("f-pw").value;
+  if(!email||!pw) return showMsg("メールとパスワードを入力してください","err");
+  if(pw.length<6) return showMsg("パスワードは6文字以上にしてください","err");
+  setBtnLoading(true);
+  showMsg("登録中…","ok");
+  AUTH.createUserWithEmailAndPassword(email,pw)
+    .then(function(r){ console.log("SIGNUP OK",r.user.email); })
+    .catch(function(e){ setBtnLoading(false); showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
+}
+function doLogout(){ AUTH.signOut(); }
+
+function setBtnLoading(on){
+  document.getElementById("b-li").disabled=on;
+  document.getElementById("b-su").disabled=on;
+  document.getElementById("b-li").textContent=on?"処理中…":"ログイン";
+}
+function showMsg(txt,type){
+  var el=document.getElementById("amsg");
+  el.textContent=txt; el.className="amsg "+type; el.style.display="block";
+}
+function hideMsg(){ document.getElementById("amsg").style.display="none"; }
+function eMsg(code){
+  return({"auth/invalid-email":"メール形式が正しくありません","auth/email-already-in-use":"このメールは既に登録されています","auth/weak-password":"パスワードは6文字以上にしてください","auth/user-not-found":"ユーザーが見つかりません","auth/wrong-password":"パスワードが違います","auth/invalid-credential":"メールまたはパスワードが違います","auth/too-many-requests":"試行回数が多すぎます","auth/network-request-failed":"ネットワークエラーです","auth/operation-not-allowed":"Firebase コンソールでメール認証を有効にしてください"})[code]||"エラー: "+code;
 }
 
-function doSignup() {
-  var email = G("f-em").value.trim();
-  var pw    = G("f-pw").value;
-  if (!email || !pw) return showMsg("メールとパスワードを入力してください");
-  if (pw.length < 6) return showMsg("パスワードは6文字以上にしてください");
-  setBusy(true);
-  showMsg("登録中…", "ok");
-  authPost("signUp", { email: email, password: pw, returnSecureToken: true })
-    .then(function(d) {
-      if (d.error) {
-        setBusy(false);
-        showMsg(authErr(d.error.message) + "\n[" + d.error.message + "]");
-        return;
-      }
-      onLoginSuccess(d);
-    })
-    .catch(function(e) {
-      setBusy(false);
-      showMsg("通信エラー: " + e.message);
-    });
-}
-
-function onLoginSuccess(d) {
-  TOKEN   = d.idToken;
-  UID     = d.localId;
-  EMAIL   = d.email;
-  REFRESH = d.refreshToken;
-  // トークンを保存（ページ再読み込み対応）
-  try { localStorage.setItem("vv_refresh", REFRESH); } catch(e) {}
-  hideMsg();
-  setBusy(false);
-  G("hd-em").textContent = EMAIL;
-  showApp();
-  startPoll();
-}
-
-function doLogout() {
-  TOKEN = null; UID = null; EMAIL = null; REFRESH = null;
-  try { localStorage.removeItem("vv_refresh"); } catch(e) {}
-  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-  videos = []; folders = [];
-  showAuth();
-}
-
-function authErr(msg) {
-  return ({
-    "EMAIL_NOT_FOUND":          "このメールは登録されていません",
-    "INVALID_PASSWORD":         "パスワードが違います",
-    "USER_DISABLED":            "このアカウントは無効です",
-    "EMAIL_EXISTS":             "このメールは既に登録されています",
-    "WEAK_PASSWORD":            "パスワードは6文字以上にしてください",
-    "INVALID_LOGIN_CREDENTIALS":"メールまたはパスワードが違います",
-    "TOO_MANY_ATTEMPTS_TRY_LATER":"試行回数が多すぎます。少し待ってください",
-    "OPERATION_NOT_ALLOWED":    "Firebase コンソールでメール認証を有効にしてください",
-  })[msg] || "エラー: " + msg;
-}
-
-// トークン自動更新
-function refreshToken() {
-  if (!REFRESH) return;
-  fetch("https://securetoken.googleapis.com/v1/token?key=" + API_KEY, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: "grant_type=refresh_token&refresh_token=" + encodeURIComponent(REFRESH)
-  }).then(function(r) { return r.json(); })
-    .then(function(d) { if (d.id_token) TOKEN = d.id_token; })
-    .catch(function() {});
-}
-
-// ============================================================
-// Firestore REST API
-// ============================================================
-function fsUrl(path) {
-  return FS_URL + "users/" + UID + "/" + path + "?key=" + API_KEY;
-}
-function fsHeaders() {
-  return { "Content-Type": "application/json", "Authorization": "Bearer " + TOKEN };
-}
-
-// コレクション一覧取得
-function fsList(col) {
-  return fetch(FS_URL + "users/" + UID + "/" + col + "?key=" + API_KEY + "&pageSize=500", {
-    headers: { "Authorization": "Bearer " + TOKEN }
-  }).then(function(r) { return r.json(); });
-}
-
-// ドキュメント作成（POST → 自動ID）
-function fsAdd(col, data) {
-  return fetch(FS_URL + "users/" + UID + "/" + col + "?key=" + API_KEY, {
-    method: "POST",
-    headers: fsHeaders(),
-    body: JSON.stringify({ fields: toFs(data) })
-  }).then(function(r) { return r.json(); });
-}
-
-// ドキュメント更新（PATCH）
-function fsUpdate(col, docId, data) {
-  var keys = Object.keys(data);
-  var mask = keys.map(function(k){ return "updateMask.fieldPaths=" + k; }).join("&");
-  return fetch(FS_URL + "users/" + UID + "/" + col + "/" + docId + "?" + mask + "&key=" + API_KEY, {
-    method: "PATCH",
-    headers: fsHeaders(),
-    body: JSON.stringify({ fields: toFs(data) })
-  }).then(function(r) { return r.json(); });
-}
-
-// ドキュメント削除
-function fsDel(col, docId) {
-  return fetch(FS_URL + "users/" + UID + "/" + col + "/" + docId + "?key=" + API_KEY, {
-    method: "DELETE",
-    headers: { "Authorization": "Bearer " + TOKEN }
-  });
-}
-
-// Firestore型変換（JS → Firestore）
-function toFs(obj) {
-  var out = {};
-  Object.keys(obj).forEach(function(k) {
-    var v = obj[k];
-    if (v === null || v === undefined) out[k] = { nullValue: null };
-    else if (typeof v === "string")    out[k] = { stringValue: v };
-    else if (typeof v === "number")    out[k] = { integerValue: String(v) };
-    else if (typeof v === "boolean")   out[k] = { booleanValue: v };
-    else if (v instanceof Date)        out[k] = { timestampValue: v.toISOString() };
-  });
-  return out;
-}
-
-// Firestore型変換（Firestore → JS）
-function fromFs(fields) {
-  if (!fields) return {};
-  var out = {};
-  Object.keys(fields).forEach(function(k) {
-    var v = fields[k];
-    if (v.stringValue  !== undefined) out[k] = v.stringValue;
-    else if (v.integerValue !== undefined) out[k] = parseInt(v.integerValue, 10);
-    else if (v.doubleValue  !== undefined) out[k] = parseFloat(v.doubleValue);
-    else if (v.booleanValue !== undefined) out[k] = v.booleanValue;
-    else if (v.timestampValue !== undefined) out[k] = { seconds: Math.floor(new Date(v.timestampValue).getTime()/1000) };
-    else if (v.nullValue !== undefined) out[k] = null;
-  });
-  return out;
-}
-
-function docId(doc) {
-  return doc.name.split("/").pop();
-}
-
-// ============================================================
-// ポーリング（リアルタイム代替）
-// ============================================================
-function startPoll() {
-  loadAll();
-  pollTimer = setInterval(loadAll, 10000); // 10秒ごと
-  // 58分ごとにトークン更新
-  setInterval(refreshToken, 58 * 60 * 1000);
-}
-
-function loadAll() {
-  if (!TOKEN || !UID) return;
-  fsList("folders").then(function(d) {
-    if (d.documents) {
-      folders = d.documents.map(function(doc) {
-        var o = fromFs(doc.fields); o.id = docId(doc); return o;
-      });
-      folders.sort(function(a,b){ return (a.createdAt&&a.createdAt.seconds||0)-(b.createdAt&&b.createdAt.seconds||0); });
-    } else { folders = []; }
-    renderFolders();
-  }).catch(function(){});
-
-  fsList("videos").then(function(d) {
-    if (d.documents) {
-      videos = d.documents.map(function(doc) {
-        var o = fromFs(doc.fields); o.id = docId(doc); return o;
-      });
-    } else { videos = []; }
+function startListen(){
+  if(!me) return;
+  var base=DB.collection("users").doc(me.uid);
+  unsubF=base.collection("folders").orderBy("createdAt","asc").onSnapshot(function(s){
+    folders=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+    renderFolders(); renderVideos();
+  },function(e){ toast("フォルダエラー:"+e.message,"err"); });
+  unsubV=base.collection("videos").orderBy("createdAt","desc").onSnapshot(function(s){
+    videos=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     renderVideos();
-  }).catch(function(){});
+  },function(e){ toast("動画エラー:"+e.message,"err"); });
+}
+function stopListen(){
+  if(unsubV){unsubV();unsubV=null;} if(unsubF){unsubF();unsubF=null;}
+  videos=[];folders=[];
 }
 
-// ============================================================
-// Video CRUD
-// ============================================================
-function addVideo() {
-  if (!TOKEN) return toast("ログインが必要です","warn");
-  var url   = G("i-url").value.trim();
-  var title = G("i-ttl").value.trim() || guessTitle(url);
-  if (!url)        return toast("URLを入力してください","warn");
-  if (!isUrl(url)) return toast("URLが正しくありません","warn");
-  fsAdd("videos", {
-    url: url, title: title, folderId: curF || "",
-    views: 0, order: videos.length,
-    createdAt: new Date(), updatedAt: new Date()
-  }).then(function(d) {
-    if (d.error) return toast("保存失敗: " + d.error.message, "err");
-    G("i-url").value = ""; G("i-ttl").value = "";
+function addVideo(){
+  if(!me) return toast("ログインが必要です","warn");
+  var url=document.getElementById("i-url").value.trim();
+  var title=document.getElementById("i-ttl").value.trim()||guessTitle(url);
+  if(!url) return toast("URLを入力してください","warn");
+  if(!isUrl(url)) return toast("URLが正しくありません","warn");
+  DB.collection("users").doc(me.uid).collection("videos").add({
+    url:url,title:title,folderId:curF||null,views:0,order:videos.length,
+    createdAt:STS(),updatedAt:STS()
+  }).then(function(){
+    document.getElementById("i-url").value="";
+    document.getElementById("i-ttl").value="";
     toast("追加しました ✓");
-    loadAll();
-  }).catch(function(e){ toast("保存失敗: "+e.message,"err"); });
+  }).catch(function(e){ toast("保存失敗:"+e.message,"err"); });
+}
+function deleteVideo(id){
+  if(!confirm("削除しますか？")) return;
+  DB.collection("users").doc(me.uid).collection("videos").doc(id).delete()
+    .then(function(){ toast("削除しました"); })
+    .catch(function(e){ toast("削除失敗:"+e.message,"err"); });
+}
+function editTitle(id){
+  var v=find(videos,id); if(!v) return;
+  var t=prompt("新しいタイトル:",v.title);
+  if(!t||!t.trim()) return;
+  DB.collection("users").doc(me.uid).collection("videos").doc(id)
+    .update({title:t.trim(),updatedAt:STS()})
+    .then(function(){ toast("タイトル更新 ✓"); })
+    .catch(function(e){ toast("更新失敗:"+e.message,"err"); });
+}
+function openVideo(id,url){
+  var v=find(videos,id);
+  DB.collection("users").doc(me.uid).collection("videos").doc(id)
+    .update({views:(v?v.views||0:0)+1}).catch(function(){});
+  window.open(url,"_blank","noopener");
 }
 
-function deleteVideo(id) {
-  if (!confirm("削除しますか？")) return;
-  fsDel("videos", id).then(function(){ toast("削除しました"); loadAll(); })
-    .catch(function(e){ toast("削除失敗: "+e.message,"err"); });
+function addFolder(){
+  var name=prompt("フォルダ名:"); if(!name||!name.trim()) return;
+  DB.collection("users").doc(me.uid).collection("folders").add({name:name.trim(),createdAt:STS()})
+    .then(function(){ toast("フォルダ作成 ✓"); })
+    .catch(function(e){ toast("作成失敗:"+e.message,"err"); });
+}
+function deleteFolder(id){
+  if(!confirm("フォルダを削除しますか？（動画は残ります）")) return;
+  var uid=me.uid,batch=DB.batch();
+  videos.filter(function(v){return v.folderId===id;}).forEach(function(v){
+    batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{folderId:null});
+  });
+  batch.delete(DB.collection("users").doc(uid).collection("folders").doc(id));
+  batch.commit().then(function(){ if(curF===id)curF=null; toast("フォルダ削除しました"); })
+    .catch(function(e){ toast("削除失敗:"+e.message,"err"); });
+}
+function selFolder(id){ curF=id; renderFolders(); renderVideos(); }
+function moveFolder(vid,fid){
+  DB.collection("users").doc(me.uid).collection("videos").doc(vid)
+    .update({folderId:fid||null,updatedAt:STS()})
+    .then(function(){ toast("移動しました ✓"); })
+    .catch(function(e){ toast("移動失敗:"+e.message,"err"); });
 }
 
-function editTitle(id) {
-  var v = find(videos,id); if (!v) return;
-  var t = prompt("新しいタイトル:", v.title);
-  if (!t || !t.trim()) return;
-  fsUpdate("videos", id, { title: t.trim(), updatedAt: new Date() })
-    .then(function(){ toast("タイトル更新 ✓"); loadAll(); })
-    .catch(function(e){ toast("更新失敗: "+e.
+function setSort(m){
+  sort=m;
+  document.querySelectorAll(".sb-btn").forEach(function(b){b.classList.remove("on");});
+  var btn=document.getElementById("sd-"+m); if(btn) btn.classList.add("on");
+  renderVideos();
+}
+function onSearch(e){ q=e.target.value.toLowerCase(); renderVideos(); }
+
+function doExport(){
+  var data=videos.map(function(v){
+    var fn="未分類";
+    for(var i=0;i<folders.length;i++){if(folders[i].id===v.folderId){fn=folders[i].name;break;}}
+    return{タイトル:v.title,URL:v.url,フォルダ:fn,閲覧数:v.views||0,
+      追加日:v.createdAt&&v.createdAt.toDate?v.createdAt.toDate().toLocaleString("ja"):""};
+  });
+  if(!data.length) return toast("データがありません","warn");
+  dlB(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"video-favorites.json");
+  var hdr=Object.keys(data[0]).join(",");
+  var rows=data.map(function(r){return Object.values(r).map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(",");});
+  setTimeout(function(){dlB(new Blob(["\uFEFF"+[hdr].concat(rows).join("\n")],{type:"text/csv"}),"video-favorites.csv");},300);
+  toast("JSON & CSV をダウンロード ✓");
+}
+function dlB(blob,name){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);}
+
+function onDS(e,id){dragId=id;e.currentTarget.classList.add("drag");e.dataTransfer.effectAllowed="move";}
+function onDE(e){e.currentTarget.classList.remove("drag");}
+function onDO(e,id){e.preventDefault();if(dragId!==id)e.currentTarget.classList.add("over");}
+function onDL(e){e.currentTarget.classList.remove("over");}
+function onDrop(e,tid){
+  e.preventDefault();e.currentTarget.classList.remove("over");
+  if(!dragId||dragId===tid) return;
+  var list=filtered(),si=-1,ti=-1;
+  for(var i=0;i<list.length;i++){if(list[i].id===dragId)si=i;if(list[i].id===tid)ti=i;}
+  if(si<0||ti<0) return;
+  var arr=list.slice(),item=arr.splice(si,1)[0];arr.splice(ti,0,item);
+  var uid=me.uid,batch=DB.batch();
+  arr.forEach(function(v,i){batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{order:i});});
+  batch.commit().catch(function(e){toast("並び替え失敗:"+e.message,"err");});
+  dragId=null;
+}
+
+function filtered(){
+  var list=videos.slice();
+  if(curF!==null) list=list.filter(function(v){return v.folderId===curF;});
+  if(q) list=list.filter(function(v){return v.title.toLowerCase().indexOf(q)>=0||v.url.toLowerCase().indexOf(q)>=0;});
+  if(sort==="title") list.sort(function(a,b){return a.title.localeCompare(b.title,"ja");});
+  else if(sort==="popular") list.sort(function(a,b){return(b.views||0)
