@@ -82,14 +82,14 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:box-shadow .18s}
 .vc:hover{box-shadow:var(--sh2)}
 .vc.drag{opacity:.4}.vc.over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-.vb{padding:14px;display:flex;flex-direction:column;gap:10px}
+.vb{padding:14px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
 .vtit{font-weight:700;font-size:19px;line-height:1.4;cursor:pointer;transition:color .15s;text-align:left;display:flex;align-items:center}
 .vtit:hover{color:var(--accent)}
-.vact-wrap{display:flex;flex-direction:column;gap:8px}
-.vact{display:flex;gap:8px;margin-left:0}
-.btn-ed{background:#fff;border:2px solid var(--accent);color:var(--accent);border-radius:10px;padding:9px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;flex:1;text-align:center}
+.vact-wrap{display:inline-flex;flex-direction:column;gap:8px;align-items:stretch;float:right}
+.vact{display:flex;gap:8px}
+.btn-ed{background:#fff;border:2px solid var(--accent);color:var(--accent);border-radius:10px;padding:9px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
 .btn-ed:hover{background:#eef2ff}
-.btn-dl{background:#fff;border:2px solid var(--red);color:var(--red);border-radius:10px;padding:9px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;flex:1;text-align:center}
+.btn-dl{background:#fff;border:2px solid var(--red);color:var(--red);border-radius:10px;padding:9px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
 .btn-dl:hover{background:#fff0f1}
 .fsel{background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;cursor:pointer;outline:none;width:100%}
 .fsel:focus{border-color:var(--accent)}
