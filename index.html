@@ -8,116 +8,99 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
 :root{
-  --bg:#f5f6fa;--bg2:#ffffff;--bg3:#f0f1f5;
-  --border:#e2e4ec;--accent:#4f7ef8;--accent2:#ff6b35;
-  --text:#1a1b2e;--muted:#8a8fa8;--red:#ff4757;--green:#2ecc71;
-  --r:12px;--sh:0 2px 16px rgba(0,0,0,.08);--sh2:0 4px 24px rgba(0,0,0,.13);
+  --bg:#f5f6fa;--bg2:#ffffff;--bg3:#f0f1f6;
+  --border:#e2e4ec;--accent:#4f7ef8;--red:#ff4757;
+  --text:#1a1b2e;--muted:#9094ab;--r:14px;
+  --sh:0 1px 6px rgba(0,0,0,.07);--sh2:0 3px 16px rgba(0,0,0,.11);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+
+/* ── AUTH ── */
 #s-auth{display:none;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg)}
 #s-app{display:none;flex-direction:column;min-height:100vh}
-
-/* AUTH */
-.abox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:44px 36px;width:100%;max-width:380px;box-shadow:var(--sh2)}
-.logo{font-size:26px;font-weight:900;text-align:center;margin-bottom:6px;letter-spacing:-1px;color:var(--text)}
+.abox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 28px;width:100%;max-width:360px;box-shadow:var(--sh2)}
+.logo{font-size:24px;font-weight:900;text-align:center;margin-bottom:4px;letter-spacing:-1px}
 .logo em{color:var(--accent);font-style:normal}
-.asub{text-align:center;color:var(--muted);margin-bottom:28px;font-size:13px}
-.abox input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:12px 14px;font-size:14px;font-family:inherit;margin-bottom:10px;outline:none;transition:border-color .2s;display:block}
+.asub{text-align:center;color:var(--muted);margin-bottom:24px;font-size:13px}
+.abox input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:15px;font-family:inherit;margin-bottom:10px;outline:none;transition:border-color .2s;display:block}
 .abox input:focus{border-color:var(--accent);background:#fff}
 .abox input::placeholder{color:var(--muted)}
-.abtns{display:flex;gap:8px;margin-top:8px}
-.btn-y{flex:1;border-radius:9px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;border:none;background:var(--accent);color:#fff;transition:opacity .2s}
+.abtns{display:flex;gap:8px;margin-top:6px}
+.btn-y{flex:1;border-radius:10px;padding:13px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;border:none;background:var(--accent);color:#fff;transition:opacity .2s}
 .btn-y:hover{opacity:.88}.btn-y:disabled{opacity:.5;cursor:not-allowed}
-.btn-n{flex:1;border-radius:9px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;background:transparent;color:var(--text);border:1.5px solid var(--border);transition:border-color .2s}
+.btn-n{flex:1;border-radius:10px;padding:13px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;background:transparent;color:var(--text);border:1.5px solid var(--border);transition:border-color .2s}
 .btn-n:hover{border-color:var(--accent)}.btn-n:disabled{opacity:.5;cursor:not-allowed}
 .amsg{border-radius:8px;padding:10px 13px;font-size:13px;margin-top:12px;display:none;word-break:break-all}
 .amsg.err{background:#fff0f1;border:1px solid #ffcdd2;color:var(--red)}
 .amsg.ok{background:#f0faf4;border:1px solid #b2dfdb;color:#1b7a4e}
 
-/* APP HEADER */
-.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+/* ── HEADER ── */
+.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
 .hd .logo{font-size:18px}
 .hd-sp{flex:1}
-
-.btn-lo{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:7px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;white-space:nowrap}
+.btn-lo{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:13px;transition:all .2s;white-space:nowrap}
 .btn-lo:hover{border-color:var(--red);color:var(--red)}
 
-/* LAYOUT */
-.main{flex:1;display:flex;max-width:1100px;width:100%;margin:0 auto;padding:20px;gap:18px}
+/* ── MAIN ── */
+.wrap{max-width:640px;width:100%;margin:0 auto;padding:14px;display:flex;flex-direction:column;gap:12px}
 
-/* SIDEBAR */
-.sb{width:200px;flex-shrink:0}
-.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
-.ptitle{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-bottom:10px}
-#fl{display:flex;flex-direction:column;gap:3px}
-.fc{background:transparent;border:none;color:var(--text);text-align:left;padding:8px 10px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;transition:background .15s;display:flex;align-items:center;gap:6px;width:100%}
-.fc:hover{background:var(--bg3)}.fc.on{background:#eef2ff;color:var(--accent);font-weight:700}
-.fcnt{margin-left:auto;background:var(--bg3);border-radius:10px;padding:0 7px;font-size:11px;color:var(--muted)}.fc.on .fcnt{background:#dde6ff;color:var(--accent)}
-.fr{display:flex;align-items:center;gap:2px}
-.fdel{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px 7px;border-radius:5px}.fdel:hover{color:var(--red);background:#fff0f1}
-.btn-af{width:100%;background:transparent;border:1.5px dashed var(--border);color:var(--muted);border-radius:8px;padding:8px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;margin-top:8px}
+/* ── フォルダバー ── */
+.fbar{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;box-shadow:var(--sh)}
+.fbar-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fc{background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;white-space:nowrap;transition:all .2s}
+.fc.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.fc:hover:not(.on){border-color:var(--accent);color:var(--accent)}
+.fdel{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:2px 4px;margin-left:-4px}
+.fdel:hover{color:var(--red)}
+.btn-af{background:transparent;border:1.5px dashed var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;transition:all .2s}
 .btn-af:hover{border-color:var(--accent);color:var(--accent)}
 
-/* CONTENT */
-.ct{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
-
-/* ADD FORM */
-.af{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;display:flex;gap:8px;flex-wrap:wrap;box-shadow:var(--sh)}
-.af input{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 12px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;min-width:0}
-.af input:focus{border-color:var(--accent);background:#fff}.af input::placeholder{color:var(--muted)}
-.af .iu{flex:2}
-.btn-add{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;white-space:nowrap;transition:opacity .2s;flex-shrink:0}
+/* ── ADD FORM ── */
+.af{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--sh)}
+.af input{background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%}
+.af input:focus{border-color:var(--accent);background:#fff}
+.af input::placeholder{color:var(--muted)}
+.btn-add{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;width:100%;transition:opacity .2s}
 .btn-add:hover{opacity:.88}
 
-/* TOOLBAR */
-.tb{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.sw{position:relative;flex:1;min-width:130px}
-.sw input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px 8px 32px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;box-shadow:var(--sh)}
-.sw input:focus{border-color:var(--accent)}.sw input::placeholder{color:var(--muted)}
+/* ── TOOLBAR ── */
+.tb{display:flex;align-items:center;gap:8px}
+.sw{position:relative;flex:1}
+.sw input{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:9px 12px 9px 32px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;box-shadow:var(--sh)}
+.sw input:focus{border-color:var(--accent)}
+.sw input::placeholder{color:var(--muted)}
 .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:13px}
+.cbadge{color:var(--muted);font-size:13px;white-space:nowrap;font-weight:700}
+.btn-ex{background:var(--bg2);border:1.5px solid var(--border);color:var(--muted);border-radius:10px;padding:9px 14px;cursor:pointer;font-family:inherit;font-size:13px;transition:all .2s;white-space:nowrap;box-shadow:var(--sh);font-weight:700}
+.btn-ex:hover{border-color:var(--accent);color:var(--accent)}
 
-
-
-.cbadge{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;white-space:nowrap}
-.btn-ex{background:var(--bg2);border:1.5px solid var(--border);color:var(--muted);border-radius:7px;padding:7px 11px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;white-space:nowrap;box-shadow:var(--sh)}
-.btn-ex:hover{border-color:var(--accent2);color:var(--accent2)}
-
-/* VIDEO LIST */
+/* ── VIDEO LIST ── */
 #vl{display:flex;flex-direction:column;gap:10px}
-.vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:box-shadow .18s,border-color .18s;cursor:grab;box-shadow:var(--sh)}
-.vc:hover{box-shadow:var(--sh2);border-color:#c5cae9}
-.vc.drag{opacity:.4;cursor:grabbing}.vc.over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-.vb{padding:14px}
-.vtit{font-weight:700;font-size:15px;line-height:1.4;margin-bottom:6px;cursor:pointer;transition:color .15s;color:var(--text)}
+.vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:box-shadow .18s}
+.vc:hover{box-shadow:var(--sh2)}
+.vc.drag{opacity:.4}.vc.over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.vb{padding:14px;display:flex;flex-direction:column;gap:10px}
+.vtit{font-weight:700;font-size:16px;line-height:1.4;cursor:pointer;transition:color .15s}
 .vtit:hover{color:var(--accent)}
-
-.vact-wrap{display:flex;flex-direction:column;gap:8px}.vact{display:flex;gap:6px;align-items:center}
-.btn-ed{background:#fff;border:2px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.vact-wrap{display:flex;flex-direction:column;gap:8px}
+.vact{display:flex;gap:8px}
+.btn-ed{background:#fff;border:2px solid var(--accent);color:var(--accent);border-radius:10px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
 .btn-ed:hover{background:#eef2ff}
-.fsel{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:10px;padding:8px 10px;font-size:13px;font-family:inherit;cursor:pointer;outline:none}
-.fsel:focus{border-color:var(--accent)}
-.btn-dl{background:#fff;border:2px solid var(--red);color:var(--red);border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;flex-shrink:0}
+.btn-dl{background:#fff;border:2px solid var(--red);color:var(--red);border-radius:10px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
 .btn-dl:hover{background:#fff0f1}
+.fsel{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;cursor:pointer;outline:none}
+.fsel:focus{border-color:var(--accent)}
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty-ic{font-size:46px;margin-bottom:12px;opacity:.4}
 
-/* TOAST */
-#ta{position:fixed;bottom:22px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
-.toast{background:#fff;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 16px;font-size:13px;max-width:260px;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;box-shadow:var(--sh2)}
+/* ── TOAST ── */
+#ta{position:fixed;bottom:20px;right:14px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
+.toast{background:#fff;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 16px;font-size:13px;max-width:250px;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;box-shadow:var(--sh2)}
 .toast.show{opacity:1;transform:translateX(0)}
-.t-ok{border-left:3px solid var(--green)}.t-warn{border-left:3px solid #f39c12}.t-err{border-left:3px solid var(--red)}
-
-@media(max-width:640px){
-  .main{flex-direction:column;padding:12px}
-  .sb{width:100%}
-  #fl{flex-direction:row;flex-wrap:wrap}
-  .af{flex-direction:column}
-  .af input,.btn-add{width:100%}
-  
-}
+.t-ok{border-left:3px solid #2ecc71}.t-warn{border-left:3px solid #f39c12}.t-err{border-left:3px solid var(--red)}
 </style>
 </head>
 <body>
@@ -140,31 +123,23 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
   <header class="hd">
     <div class="logo">Video<em>Vault</em></div>
     <div class="hd-sp"></div>
-    
     <button class="btn-lo" onclick="doLogout()">ログアウト</button>
   </header>
-  <div class="main">
-    <aside class="sb">
-      <div class="panel">
-        <div class="ptitle">フォルダ</div>
-        <div id="fl"></div>
-        <button class="btn-af" onclick="addFolder()">＋ フォルダ追加</button>
-      </div>
-    </aside>
-    <div class="ct">
-      <div class="af">
-        <input id="i-url" class="iu" type="url" placeholder="動画URL（YouTube / ニコ動など）">
-        
-        <button class="btn-add" onclick="addVideo()">＋ 追加</button>
-      </div>
-      <div class="tb">
-        <div class="sw"><span class="si">🔍</span><input id="i-q" type="text" placeholder="検索…" oninput="onSearch(event)"></div>
-        <span class="cbadge" id="cbadge">0件</span>
-        <button class="btn-ex" onclick="doExport()">出力</button>
-      </div>
-      <div id="vl">
-        <div class="empty"><div class="empty-ic">🎬</div><p>動画を追加してください</p></div>
-      </div>
+  <div class="wrap">
+    <div class="af">
+      <input id="i-url" type="url" placeholder="動画URL（YouTube / ニコ動など）">
+      <button class="btn-add" onclick="addVideo()">＋ 追加</button>
+    </div>
+    <div class="fbar">
+      <div class="fbar-row" id="fl"></div>
+    </div>
+    <div class="tb">
+      <div class="sw"><span class="si">🔍</span><input id="i-q" type="text" placeholder="検索…" oninput="onSearch(event)"></div>
+      <span class="cbadge" id="cbadge">0件</span>
+      <button class="btn-ex" onclick="doExport()">出力</button>
+    </div>
+    <div id="vl">
+      <div class="empty"><div class="empty-ic">🎬</div><p>動画を追加してください</p></div>
     </div>
   </div>
 </div>
@@ -371,13 +346,16 @@ function filtered(){
 }
 
 function renderFolders(){
-  var h='<div class="fr"><button class="fc'+(curF===null?' on':'')+'" onclick="selFolder(null)">📋 すべて <span class="fcnt">'+videos.length+'</span></button></div>';
+  var h='<button class="fc'+(curF===null?' on':'')+'" onclick="selFolder(null)">すべて ('+videos.length+')</button>';
   folders.forEach(function(f){
     var cnt=videos.filter(function(v){return v.folderId===f.id;}).length;
-    h+='<div class="fr"><button class="fc'+(curF===f.id?' on':'')+'" onclick="selFolder(\''+f.id+'\')">📁 '+esc(f.name)+' <span class="fcnt">'+cnt+'</span></button><button class="fdel" onclick="deleteFolder(\''+f.id+'\')" title="削除">×</button></div>';
+    h+='<button class="fc'+(curF===f.id?' on':'')+'" onclick="selFolder(\''+f.id+'\')">'+esc(f.name)+' ('+cnt+')</button>';
+    h+='<button class="fdel" onclick="deleteFolder(\''+f.id+'\')" title="削除">×</button>';
   });
+  h+='<button class="btn-af" onclick="addFolder()">＋ 追加</button>';
   document.getElementById("fl").innerHTML=h;
 }
+
 
 function renderVideos(){
   var list=filtered();
@@ -393,21 +371,22 @@ function renderVideos(){
     for(var i=0;i<folders.length;i++){if(folders[i].id===v.folderId){fn=folders[i].name;break;}}
     var fo='<option value="">📂 未分類</option>';
     folders.forEach(function(f){fo+='<option value="'+f.id+'"'+(v.folderId===f.id?' selected':'')+'>'+esc(f.name)+'</option>';});
-    var dt=v.createdAt&&v.createdAt.seconds?new Date(v.createdAt.seconds*1000).toLocaleDateString("ja"):"";
     var su=v.url.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-    h+='<div class="vc" draggable="true" ondragstart="onDS(event,\''+v.id+'\')" ondragend="onDE(event)" ondragover="onDO(event,\''+v.id+'\')" ondragleave="onDL(event)" ondrop="onDrop(event,\''+v.id+'\')">'
-      +'<div class="vb">'
-      +'<div class="vtit" onclick="openVideo(\''+v.id+'\',\''+su+'\')">'+esc(v.title)+'</div>'
-      +'<div class="vact-wrap">'
-      +'<div class="vact">'
-      +'<button class="btn-ed" onclick="editTitle(\''+v.id+'\')">編集</button>'
-      +'<button class="btn-dl" onclick="deleteVideo(\''+v.id+'\')">削除</button>'
-      +'</div>'
-      +'<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'
-      +'</div>'
+    h+='<div class="vc" draggable="true" ondragstart="onDS(event,\''+v.id+'\')" ondragend="onDE(event)" ondragover="onDO(event,\''+v.id+'\')" ondragleave="onDL(event)" ondrop="onDrop(event,\''+v.id+'\')">'+
+       '<div class="vb">'+
+       '<div class="vtit" onclick="openVideo(\''+v.id+'\',\''+su+'\')">'+esc(v.title)+'</div>'+
+       '<div class="vact-wrap">'+
+       '<div class="vact">'+
+       '<button class="btn-ed" onclick="editTitle(\''+v.id+'\')">編集</button>'+
+       '<button class="btn-dl" onclick="deleteVideo(\''+v.id+'\')">削除</button>'+
+       '</div>'+
+       '<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'+
+       '</div>'+
+       '</div></div>';
   });
   c.innerHTML=h;
 }
+
 
 function guessTitle(url){try{var u=new URL(url);return u.hostname.replace("www.","")+u.pathname;}catch(e){return url;}}
 function isUrl(s){try{new URL(s);return true;}catch(e){return false;}}
