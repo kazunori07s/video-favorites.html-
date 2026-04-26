@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VideoVault</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap');
+:root{--bg:#0d0e12;--bg2:#13141a;--bg3:#1c1d25;--border:#2b2c37;--accent:#f0c040;--accent2:#ff6b35;--text:#e4e5ee;--muted:#7a7b8e;--red:#ff4757;--green:#2ed573;--r:10px;--sh:0 6px 28px rgba(0,0,0,.55)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+#s-auth{display:none;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+#s-app{display:none;flex-direction:column;min-height:100vh}
+.abox{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:44px 36px;width:100%;max-width:380px;box-shadow:var(--sh)}
+.logo{font-size:26px;font-weight:900;text-align:center;margin-bottom:6px;letter-spacing:-1px}
+.logo em{color:var(--accent);font-style:normal}
+.asub{text-align:center;color:var(--muted);margin-bottom:28px;font-size:13px}
+.abox input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px 14px;font-size:14px;font-family:inherit;margin-bottom:10px;outline:none;transition:border-color .2s;display:block}
+.abox input:focus{border-color:var(--accent)}
+.abox input::placeholder{color:var(--muted)}
+.abtns{display:flex;gap:8px;margin-top:8px}
+.btn-y,.btn-n{flex:1;border-radius:8px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;border:none;transition:opacity .2s}
+.btn-y{background:var(--accent);color:#000}.btn-y:hover{opacity:.85}.btn-y:disabled{opacity:.5;cursor:not-allowed}
+.btn-n{background:transparent;color:var(--text);border:1px solid var(--border)!important}.btn-n:hover{border-color:var(--accent)!important}.btn-n:disabled{opacity:.5;cursor:not-allowed}
+.amsg{border-radius:7px;padding:10px 13px;font-size:13px;margin-top:12px;display:none;word-break:break-all}
+.amsg.err{background:#ff475722;border:1px solid var(--red);color:var(--red)}
+.amsg.ok{background:#2ed57322;border:1px solid var(--green);color:var(--green)}
+.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100}
+.hd .logo{font-size:17px}.hd-sp{flex:1}
+.hd-em{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace}
+.btn-lo{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s}
+.btn-lo:hover{border-color:var(--red);color:var(--red)}
+.main{flex:1;display:flex;max-width:1200px;width:100%;margin:0 auto;padding:20px;gap:20px}
+.sb{width:210px;flex-shrink:0}.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.ptitle{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-bottom:10px}
+#fl{display:flex;flex-direction:column;gap:3px}
+.fc{background:transparent;border:none;color:var(--text);text-align:left;padding:7px 10px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;transition:background .15s;display:flex;align-items:center;gap:6px;width:100%}
+.fc:hover{background:var(--bg3)}.fc.on{background:var(--bg3);color:var(--accent)}
+.fcnt{margin-left:auto;background:var(--bg3);border-radius:10px;padding:0 7px;font-size:11px;color:var(--muted)}.fc.on .fcnt{color:var(--accent)}
+.fr{display:flex;align-items:center;gap:2px}
+.fdel{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:4px 7px;border-radius:4px}.fdel:hover{color:var(--red)}
+.btn-af{width:100%;background:var(--bg3);border:1px dashed var(--border);color:var(--muted);border-radius:6px;padding:8px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;margin-top:8px}
+.btn-af:hover{border-color:var(--accent);color:var(--accent)}
+.ct{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
+.af{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;display:flex;gap:8px;flex-wrap:wrap}
+.af input{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;min-width:0}
+.af input:focus{border-color:var(--accent)}.af input::placeholder{color:var(--muted)}
+.af .iu{flex:2}.af .it{flex:1.2}
+.btn-add{background:var(--accent);color:#000;border:none;border-radius:8px;padding:9px 18px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;white-space:nowrap;transition:opacity .2s;flex-shrink:0}
+.btn-add:hover{opacity:.85}
+.tb{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sw{position:relative;flex:1;min-width:150px}
+.sw input{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px 8px 32px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
+.sw input:focus{border-color:var(--accent)}.sw input::placeholder{color:var(--muted)}
+.si{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:14px}
+.sbs{display:flex;gap:4px}
+.sb-btn{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 11px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s}
+.sb-btn:hover{border-color:var(--accent)}.sb-btn.on{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+.cbadge{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.btn-ex{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 11px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s;white-space:nowrap}
+.btn-ex:hover{border-color:var(--accent2);color:var(--accent2)}
+#vl{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px}
+.vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;cursor:grab}
+.vc:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:#3a3b48}
+.vc.drag{opacity:.35;cursor:grabbing}.vc.over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.vth{position:relative;aspect-ratio:16/9;background:var(--bg3);cursor:pointer;overflow:hidden}
+.vth img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}.vth:hover img{transform:scale(1.04)}
+.nth{display:flex;align-items:center;justify-content:center;height:100%;font-size:32px;opacity:.25}
+.pov{position:absolute;inset:0;background:rgba(0,0,0,.52);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;opacity:0;transition:opacity .2s}
+.vth:hover .pov{opacity:1}
+.vb{padding:12px}
+.vtit{font-weight:700;font-size:13px;line-height:1.4;margin-bottom:6px;cursor:pointer;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;transition:color .15s}
+.vtit:hover{color:var(--accent)}
+.vmeta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.vurl{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+.vact{display:flex;gap:6px;align-items:center}
+.btn-ed{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.btn-ed:hover{border-color:var(--accent);color:var(--accent)}
+.fsel{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:4px 6px;font-size:11px;font-family:inherit;cursor:pointer;outline:none;min-width:0}
+.fsel:focus{border-color:var(--accent)}
+.btn-dl{background:transparent;border:1px solid transparent;color:var(--muted);border-radius:5px;padding:4px 8px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s;flex-shrink:0}
+.btn-dl:hover{color:var(--red);border-color:var(--red)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-ic{font-size:46px;margin-bottom:12px;opacity:.3}
+#ta{position:fixed;bottom:22px;right:22px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
+.toast{background:var(--bg2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 16px;font-size:13px;max-width:280px;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;box-shadow:var(--sh)}
+.toast.show{opacity:1;transform:translateX(0)}.t-ok{border-left:3px solid var(--green)}.t-warn{border-left:3px solid var(--accent)}.t-err{border-left:3px solid var(--red)}
+@media(max-width:680px){.main{flex-direction:column;padding:12px}.sb{width:100%}#fl{flex-direction:row;flex-wrap:wrap}.af{flex-direction:column}.af input{width:100%}}
+</style>
+</head>
+<body>
+
+<div id="s-auth">
+  <div class="abox">
+    <div class="logo">Video<em>Vault</em></div>
+    <div class="asub">お気に入り動画リスト</div>
+    <input id="f-em" type="email"    placeholder="メールアドレス" autocomplete="email">
+    <input id="f-pw" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password">
+    <div class="abtns">
+      <button class="btn-y" id="b-li" onclick="doLogin()">ログイン</button>
+      <button class="btn-n" id="b-su" onclick="doSignup()">新規登録</button>
+    </div>
+    <div class="amsg" id="amsg"></div>
+  </div>
+</div>
+
+<div id="s-app">
+  <header class="hd">
+    <div class="logo">Video<em>Vault</em></div>
+    <div class="hd-sp"></div>
+    <span class="hd-em" id="hd-em"></span>
+    <button class="btn-lo" onclick="doLogout()">ログアウト</button>
+  </header>
+  <div class="main">
+    <aside class="sb">
+      <div class="panel">
+        <div class="ptitle">フォルダ</div>
+        <div id="fl"></div>
+        <button class="btn-af" onclick="addFolder()">＋ フォルダ追加</button>
+      </div>
+    </aside>
+    <div class="ct">
+      <div class="af">
+        <input id="i-url" class="iu" type="url"  placeholder="動画URL（YouTube / ニコ動など）">
+        <input id="i-ttl" class="it" type="text" placeholder="タイトル（省略可）">
+        <button class="btn-add" onclick="addVideo()">＋ 追加</button>
+      </div>
+      <div class="tb">
+        <div class="sw"><span class="si">🔍</span><input id="i-q" type="text" placeholder="検索…" oninput="onSearch(event)"></div>
+        <div class="sbs">
+          <button class="sb-btn on" id="sd-date"    onclick="setSort('date')">日付順</button>
+          <button class="sb-btn"    id="sd-popular" onclick="setSort('popular')">人気順</button>
+          <button class="sb-btn"    id="sd-title"   onclick="setSort('title')">タイトル順</button>
+        </div>
+        <span class="cbadge" id="cbadge">0件</span>
+        <button class="btn-ex" onclick="doExport()">⬇ 出力</button>
+      </div>
+      <div id="vl"><div class="empty"><div class="empty-ic">🎬</div><p>動画を追加してください</p></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="ta"></div>
+
+<script>
+// ============================================================
+// Firebase 初期化
+// ============================================================
+firebase.initializeApp({
+  apiKey:            "AIzaSyBGRXqgK2qsHZD4wLpgIufRvdhoQXulits",
+  authDomain:        "video-favorites-4d748.firebaseapp.com",
+  projectId:         "video-favorites-4d748",
+  storageBucket:     "video-favorites-4d748.firebasestorage.app",
+  messagingSenderId: "219810409937",
+  appId:             "1:219810409937:web:25e9b3457b78bf851d04f0"
+});
+var AUTH = firebase.auth();
+var DB   = firebase.firestore();
+var STS  = firebase.firestore.FieldValue.serverTimestamp;
+
+// ============================================================
+// 状態
+// ============================================================
+var me = null, videos = [], folders = [];
+var unsubV = null, unsubF = null;
+var curF = null, q = "", sort = "date", dragId = null;
+
+// ============================================================
+// 画面切り替え
+// ============================================================
+function showAuth() {
+  document.getElementById("s-auth").style.cssText = "display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px";
+  document.getElementById("s-app").style.display = "none";
+}
+function showApp() {
+  document.getElementById("s-auth").style.display = "none";
+  document.getElementById("s-app").style.cssText = "display:flex;flex-direction:column;min-height:100vh";
+}
+
+// ============================================================
+// Auth 監視（唯一の画面切り替えトリガー）
+// ============================================================
+AUTH.onAuthStateChanged(function(user) {
+  console.log("[Auth] state changed:", user ? user.email : "null");
+  me = user;
+  if (user) {
+    document.getElementById("hd-em").textContent = user.email;
+    setBtnLoading(false);
+    hideMsg();
+    showApp();
+    startListen();
+  } else {
+    stopListen();
+    showAuth();
+  }
+});
+
+// ============================================================
+// Auth 操作
+// ============================================================
+function doLogin() {
+  var email = G("f-em").value.trim();
+  var pw    = G("f-pw").value;
+  if (!email || !pw) return showMsg("メールとパスワードを入力してください", "err");
+  setBtnLoading(true);
+  showMsg("認証中…", "ok");
+  AUTH.signInWithEmailAndPassword(email, pw)
+    .then(function(r) {
+      console.log("[Auth] login OK:", r.user.email);
+      // onAuthStateChanged が showApp() を呼ぶ
+    })
+    .catch(function(e) {
+      console.error("[Auth] login ERR:", e.code, e.message);
+      setBtnLoading(false);
+      showMsg(eMsg(e.code) + "\n[" + e.code + "]", "err");
+    });
+}
+
+function doSignup() {
+  var email = G("f-em").value.trim();
+  var pw    = G("f-pw").value;
+  if (!email || !pw) return showMsg("メールとパスワードを入力してください", "err");
+  if (pw.length < 6) return showMsg("パスワードは6文字以上にしてください", "err");
+  setBtnLoading(true);
+  showMsg("登録中…", "ok");
+  AUTH.createUserWithEmailAndPassword(email, pw)
+    .then(function(r) {
+      console.log("[Auth] signup OK:", r.user.email);
+    })
+    .catch(function(e) {
+      console.error("[Auth] signup ERR:", e.code, e.message);
+      setBtnLoading(false);
+      showMsg(eMsg(e.code) + "\n[" + e.code + "]", "err");
+    });
+}
+
+function doLogout() { AUTH.signOut(); }
+
+function setBtnLoading(on) {
+  G("b-li").disabled  = on;
+  G("b-su").disabled  = on;
+  G("b-li").textContent = on ? "処理中…" : "ログイン";
+}
+function showMsg(txt, type) {
+  var el = G("amsg");
+  el.textContent   = txt;
+  el.className     = "amsg " + type;
+  el.style.display = "block";
+}
+function hideMsg() { G("amsg").style.display = "none"; }
+
+function eMsg(code) {
+  return ({
+    "auth/invalid-email":          "メール形式が正しくありません",
+    "auth/email-already-in-use":   "このメールは既に登録されています",
+    "auth/weak-password":          "パスワードは6文字以上にしてください",
+    "auth/user-not-found":         "ユーザーが見つかりません",
+    "auth/wrong-password":         "パスワードが違います",
+    "auth/invalid-credential":     "メールまたはパスワードが違います",
+    "auth/too-many-requests":      "試行回数が多すぎます。少し待ってください",
+    "auth/network-request-failed": "ネットワークエラーです。接続を確認してください",
+    "auth/operation-not-allowed":  "Firebase コンソールでメール認証を有効にしてください",
+    "auth/configuration-not-found":"Firebase の設定が見つかりません。コンソールを確認してください",
+  })[code] || "エラー: " + code;
+}
+
+// ============================================================
+// Firestore 購読
+// ============================================================
+function startListen() {
+  if (!me) return;
+  var base = DB.collection("users").doc(me.uid);
+  unsubF = base.collection("folders").orderBy("createdAt","asc")
+    .onSnapshot(function(s) {
+      folders = s.docs.map(function(d){ return ext(d); });
+      renderFolders(); renderVideos();
+    }, function(e){ toast("フォルダエラー:"+e.message,"err"); });
+  unsubV = base.collection("videos").orderBy("createdAt","desc")
+    .onSnapshot(function(s) {
+      videos = s.docs.map(function(d){ return ext(d); });
+      renderVideos();
+    }, function(e){ toast("動画エラー:"+e.message,"err"); });
+}
+function stopListen() {
+  if (unsubV){ unsubV(); unsubV=null; }
+  if (unsubF){ unsubF(); unsubF=null; }
+  videos=[]; folders=[];
+}
+function ext(d){ var o=d.data(); o.id=d.id; return o; }
+
+// ============================================================
+// Video CRUD
+// ============================================================
+function addVideo() {
+  if (!me) return toast("ログインが必要です","warn");
+  var url   = G("i-url").value.trim();
+  var title = G("i-ttl").value.trim() || guessTitle(url);
+  if (!url)        return toast("URLを入力してください","warn");
+  if (!isUrl(url)) return toast("URLが正しくありません","warn");
+  DB.collection("users").doc(me.uid).collection("videos").add({
+    url:url,title:title,folderId:curF||null,views:0,order:videos.length,
+    createdAt:STS(),updatedAt:STS()
+  }).then(function(){ G("i-url").value=""; G("i-ttl").value=""; toast("追加しました ✓"); })
+    .catch(function(e){ toast("保存失敗:"+e.message,"err"); });
+}
+function deleteVideo(id) {
+  if (!confirm("削除しますか？")) return;
+  DB.collection("users").doc(me.uid).collection("videos").doc(id)
+    .delete().then(function(){ toast("削除しました"); })
+    .catch(function(e){ toast("削除失敗:"+e.message,"err"); });
+}
+function editTitle(id) {
+  var v=find(videos,id); if(!v) return;
+  var t=prompt("新しいタイトル:",v.title);
+  if(!t||!t.trim()) return;
+  DB.collection("users").doc(me.uid).collection("videos").doc(id)
+    .update({title:t.trim(),updatedAt:STS()})
+    .then(function(){ toast("タイトル更新 ✓"); })
+    .catch(function(e){ toast("更新失敗:"+e.message,"err"); });
+}
+function openVideo(id,url) {
+  var v=find(videos,id);
+  DB.collection("users").doc(me.uid).collection("videos").doc(id)
+    .update({views:(v?v.views||0:0)+1}).catch(function(){});
+  window.open(url,"_blank","noopener");
+}
+
+// ============================================================
+// Folder CRUD
+// ============================================================
+function addFolder() {
+  var name=prompt("フォルダ名:"); if(!name||!name.trim()) return;
+  DB.collection("users").doc(me.uid).collection("folders").add({name:name.trim(),createdAt:STS()})
+    .then(function(){ toast("フォルダ作成 ✓"); })
+    .catch(function(e){ toast("作成失敗:"+e.message,"err"); });
+}
+function deleteFolder(id) {
+  if(!confirm("フォルダを削除しますか？（動画は残ります）")) return;
+  var uid=me.uid, batch=DB.batch();
+  videos.filter(function(v){ return v.folderId===id; })
+    .forEach(function(v){ batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{folderId:null}); });
+  batch.delete(DB.collection("users").doc(uid).collection("folders").doc(id));
+  batch.commit().then(function(){ if(curF===id)curF=null; toast("フォルダ削除しました"); })
+    .catch(function(e){ toast("削除失敗:"+e.message,"err"); });
+}
+function selFolder(id){ curF=id; renderFolders(); renderVideos(); }
+function moveFolder(vid,fid) {
+  DB.collection("users").doc(me.uid).collection("videos").doc(vid)
+    .update({folderId:fid||null,updatedAt:STS()})
+    .then(function(){ toast("移動しました ✓"); })
+    .catch(function(e){ toast("移動失敗:"+e.message,"err"); });
+}
+
+// ============================================================
+// Sort / Search / Export
+// ============================================================
+function setSort(m) {
+  sort=m;
+  document.querySelectorAll(".sb-btn").forEach(function(b){ b.classList.remove("on"); });
+  var btn=G("sd-"+m); if(btn) btn.classList.add("on");
+  renderVideos();
+}
+function onSearch(e){ q=e.target.value.toLowerCase(); renderVideos(); }
+function doExport() {
+  var data=videos.map(function(v){
+    var fn="未分類";
+    for(var i=0;i<folders.length;i++){ if(folders[i].id===v.folderId){fn=folders[i].name;break;} }
+    return{タイトル:v.title,URL:v.url,フォルダ:fn,閲覧数:v.views||0,
+      追加日:v.createdAt&&v.createdAt.toDate?v.createdAt.toDate().toLocaleString("ja"):""};
+  });
+  if(!data.length) return toast("データがありません","warn");
+  dlB(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"video-favorites.json");
+  var hdr=Object.keys(data[0]).join(",");
+  var rows=data.map(function(r){ return Object.values(r).map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(","); });
+  setTimeout(function(){ dlB(new Blob(["\uFEFF"+[hdr].concat(rows).join("\n")],{type:"text/csv"}),"video-favorites.csv"); },300);
+  toast("JSON & CSV をダウンロード ✓");
+}
+function dlB(blob,name){ var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; a.click(); URL.revokeObjectURL(a.href); }
+
+// ============================================================
+// Drag & Drop
+// ============================================================
+function onDS(e,id){ dragId=id; e.currentTarget.classList.add("drag"); e.dataTransfer.effectAllowed="move"; }
+function onDE(e)   { e.currentTarget.classList.remove("drag"); }
+function onDO(e,id){ e.preventDefault(); if(dragId!==id) e.currentTarget.classList.add("over"); }
+function onDL(e)   { e.currentTarget.classList.remove("over"); }
+function onDrop(e,tid) {
+  e.preventDefault(); e.currentTarget.classList.remove("over");
+  if(!dragId||dragId===tid) return;
+  var list=filtered(),si=-1,ti=-1;
+  for(var i=0;i<list.length;i++){ if(list[i].id===dragId)si=i; if(list[i].id===tid)ti=i; }
+  if(si<0||ti<0) return;
+  var arr=list.slice(),item=arr.splice(si,1)[0]; arr.splice(ti,0,item);
+  var uid=me.uid,batch=DB.batch();
+  arr.forEach(function(v,i){ batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{order:i}); });
+  batch.commit().catch(function(e){ toast("並び替え失敗:"+e.message,"err"); });
+  dragId=null;
+}
+
+// ============================================================
+// Render
+// ============================================================
+function filtered() {
+  var list=videos.slice();
+  if(curF!==null) list=list.filter(function(v){ return v.folderId===curF; });
+  if(q) list=list.filter(function(v){ return v.title.toLowerCase().indexOf(q)>=0||v.url.toLowerCase().indexOf(q)>=0; });
+  if(sort==="title")   list.sort(function(a,b){ return a.title.localeCompare(b.title,"ja"); });
+  else if(sort==="popular") list.sort(function(a,b){ return(b.views||0)-(a.views||0); });
+  else list.sort(function(a,b){ return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0); });
+  return list;
+}
+function renderFolders() {
+  var h='<div class="fr"><button class="fc'+(curF===null?' on':'')+'" onclick="selFolder(null)">📋 すべて <span class="fcnt">'+videos.length+'</span></button></div>';
+  folders.forEach(function(f){
+    var cnt=videos.filter(function(v){ return v.folderId===f.id; }).length;
+    h+='<div class="fr"><button class="fc'+(curF===f.id?' on':'')+'" onclick="selFolder(\''+f.id+'\')">📁 '+esc(f.name)+' <span class="fcnt">'+cnt+'</span></button><button class="fdel" onclick="deleteFolder(\''+f.id+'\')" title="削除">×</button></div>';
+  });
+  G("fl").innerHTML=h;
+}
+function renderVideos() {
+  var list=filtered(); G("cbadge").textContent=list.length+"件";
+  var c=G("vl");
+  if(!list.length){ c.innerHTML='<div class="empty"><div class="empty-ic">🎬</div><p>'+(q?"検索結果がありません":"動画を追加してください")+'</p></div>'; return; }
+  var h="";
+  list.forEach(function(v){
+    var th=thumb(v.url),fn="";
+    for(var i=0;i<folders.length;i++){ if(folders[i].id===v.folderId){fn=folders[i].name;break;} }
+    var fo='<option value="">📂 未分類</option>';
+    folders.forEach(function(f){ fo+='<option value="'+f.id+'"'+(v.folderId===f.id?' selected':'')+'>'+esc(f.name)+'</option>'; });
+    var dt=v.createdAt&&v.createdAt.toDate?v.createdAt.toDate().toLocaleDateString("ja"):"";
+    var su=v.url.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+    h+='<div class="vc" draggable="true" ondragstart="onDS(event,\''+v.id+'\')" ondragend="onDE(event)" ondragover="onDO(event,\''+v.id+'\')" ondragleave="onDL(event)" ondrop="onDrop(event,\''+v.id+'\')">'
+     +'<div class="vth" onclick="openVideo(\''+v.id+'\',\''+su+'\')"> '+(th?'<img src="'+th+'" loading="lazy" alt="" onerror="this.parentElement.innerHTML=\'<div class=nth>🎬</div>\'">'
+     :'<div class="nth">🎬</div>')+'<div class="pov">▶ 開く</div></div>'
+     +'<div class="vb"><div class="vtit" onclick="openVideo(\''+v.id+'\',\''+su+'\')">'+esc(v.title)+'</div>'
+     +'<div class="vmeta"><span>👁 '+(v.views||0)+'</span><span>'+dt+'</span>'+(fn?'<span>📁 '+esc(fn)+'</span>':'')+'</div>'
+     +'<div class="vurl">'+esc(v.url)+'</div>'
+     +'<div class="vact"><button class="btn-ed" onclick="editTitle(\''+v.id+'\')">✏️ 編集</button>'
+     +'<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'
+     +'<button class="btn-dl" onclick="deleteVideo(\''+v.id+'\')">🗑</button></div></div></div>';
+  });
+  c.innerHTML=h;
+}
+
+// ============================================================
+// Utilities
+// ============================================================
+function thumb(url){
+  try{
+    var u=new URL(url),vid=u.searchParams.get("v");
+    if(!vid&&u.hostname==="youtu.be") vid=u.pathname.slice(1).split("?")[0];
+    if(!vid&&u.pathname.indexOf("/shorts/")>=0) vid=u.pathname.split("/shorts/")[1].split("/")[0];
+    if(vid) return "https://img.youtube.com/vi/"+vid+"/mqdefault.jpg";
+    if(u.hostname.indexOf("nicovideo.jp")>=0){
+      var m=u.pathname.match(/\/(sm\d+|\d+)/);
+      if(m) return "https://nicovideo.cdn.nimg.jp/thumbnails/"+m[1].replace("sm","")+"/120x68";
+    }
+  }catch(e){}
+  return null;
+}
+function guessTitle(url){ try{var u=new URL(url);return u.hostname.replace("www.","")+u.pathname;}catch(e){return url;} }
+function isUrl(s){ try{new URL(s);return true;}catch(e){return false;} }
+function find(arr,id){ for(var i=0;i<arr.length;i++){if(arr[i].id===id)return arr[i];} return null; }
+function G(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function toast(msg,type){
+  type=type||"ok";
+  var t=document.createElement("div"); t.className="toast t-"+type; t.textContent=msg;
+  G("ta").appendChild(t);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ t.classList.add("show"); }); });
+  setTimeout(function(){ t.classList.remove("show"); setTimeout(function(){ t.remove(); },400); },3200);
+}
+
+// ============================================================
+// キーボード
+// ============================================================
+G("f-em").addEventListener("keydown",function(e){ if(e.key==="Enter") G("f-pw").focus(); });
+G("f-pw").addEventListener("keydown",function(e){ if(e.key==="Enter") doLogin(); });
+G("i-url").addEventListener("keydown",function(e){ if(e.key==="Enter") addVideo(); });
+G("i-ttl").addEventListener("keydown",function(e){ if(e.key==="Enter") addVideo(); });
+
+// 初期表示
+showAuth();
+</script>
+</body>
+</html>
