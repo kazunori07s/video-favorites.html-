@@ -76,8 +76,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .fc{background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;white-space:nowrap;transition:all .2s}
 .fc.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .fc:hover:not(.on){border-color:var(--accent);color:var(--accent)}
-.fdel{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:2px 4px;margin-left:-4px}
-.fdel:hover{color:var(--red)}
+
+
 .btn-af{background:transparent;border:1.5px dashed var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;transition:all .2s}
 .btn-af:hover{border-color:var(--accent);color:var(--accent)}
 
@@ -572,7 +572,7 @@ function renderFolders(){
   folders.forEach(function(f){
     var cnt=videos.filter(function(v){return v.folderId===f.id;}).length;
     h+='<button class="fc'+(curF===f.id?' on':'')+'" onclick="selFolder(\''+f.id+'\')">'+esc(f.name)+' ('+cnt+')</button>';
-    h+='<button class="fdel" onclick="deleteFolder(\''+f.id+'\')" title="削除">×</button>';
+    
   });
   h+='<button class="btn-af" onclick="addFolder()">＋ 追加</button>';
   document.getElementById("fl").innerHTML=h;
