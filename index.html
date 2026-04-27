@@ -11,7 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
 :root{
   --bg:#f5f6fa;--bg2:#fff;--bg3:#f0f1f6;
-  --border:#e2e4ec;--accent:#4f7ef8;--red:#ff4757;
+  --border:#e2e4ec;--accent:#4f7ef8;--red:#ff4757;--gold:#b8953a;
   --text:#1a1b2e;--muted:#9094ab;--r:14px;
   --sh:0 1px 6px rgba(0,0,0,.07);--sh2:0 3px 16px rgba(0,0,0,.12);
   --nav:58px;
@@ -19,11 +19,10 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;-webkit-tap-highlight-color:transparent}
 
-/* AUTH */
+/* ── AUTH ── */
 #s-auth{display:none;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg)}
-.abox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 28px;width:100%;max-width:360px;box-shadow:var(--sh2)}
-.logo{font-size:24px;font-weight:900;text-align:center;margin-bottom:4px;letter-spacing:-1px}
-.logo em{color:var(--accent);font-style:normal}
+.abox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:36px 28px;width:100%;max-width:360px;box-shadow:var(--sh2)}
+.auth-logo{display:flex;justify-content:center;margin-bottom:8px}
 .asub{text-align:center;color:var(--muted);margin-bottom:24px;font-size:13px}
 .abox input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:15px;font-family:inherit;margin-bottom:10px;outline:none;transition:border-color .2s;display:block}
 .abox input:focus{border-color:var(--accent);background:#fff}
@@ -40,29 +39,26 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .amsg.err{background:#fff0f1;border:1px solid #ffcdd2;color:var(--red)}
 .amsg.ok{background:#f0faf4;border:1px solid #b2dfdb;color:#1b7a4e}
 
-/* APP */
+/* ── APP ── */
 #s-app{display:none;flex-direction:column;min-height:100vh}
-.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
-.hd .logo{font-size:18px}
+.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.hd-logo{cursor:pointer;display:flex;align-items:center}
 .hd-sp{flex:1}
-.hd-title{font-size:17px;font-weight:700}
 
-/* BOTTOM NAV */
+/* ── BOTTOM NAV ── */
 .bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -2px 10px rgba(0,0,0,.07)}
 .bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:transparent;cursor:pointer;font-family:inherit;color:var(--muted);font-size:10px;font-weight:700;transition:color .15s;padding:0}
 .bnav-btn.on{color:var(--accent)}
 .bnav-icon{font-size:22px;line-height:1}
 
-/* TABS */
+/* ── TABS ── */
 .tab{display:none;flex:1;overflow-y:auto;padding-bottom:calc(var(--nav)+8px)}
 .tab.on{display:block}
 .wrap{max-width:640px;width:100%;margin:0 auto;padding:14px;display:flex;flex-direction:column;gap:12px}
-
-/* CARDS & COMMON */
 .section-title{font-size:16px;font-weight:700;padding:4px 0}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
 
-/* ADD FORM */
+/* ── ADD FORM ── */
 .af{padding:14px;display:flex;flex-direction:column;gap:8px}
 .af input{background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%}
 .af input:focus{border-color:var(--accent);background:#fff}
@@ -70,21 +66,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .btn-add{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;width:100%;transition:opacity .2s}
 .btn-add:hover{opacity:.88}
 
-/* FOLDER BAR */
+/* ── FOLDER BAR ── */
 .fbar{padding:12px}
 .fbar-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .fc{background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;white-space:nowrap;transition:all .2s}
 .fc.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .fc:hover:not(.on){border-color:var(--accent);color:var(--accent)}
-
-
 .btn-af{background:transparent;border:1.5px dashed var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;transition:all .2s}
 .btn-af:hover{border-color:var(--accent);color:var(--accent)}
 .btn-fop{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:6px 10px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;transition:all .2s}
 .btn-fop:hover{border-color:var(--accent);color:var(--accent)}
 .btn-fop.danger:hover{border-color:var(--red);color:var(--red)}
 
-/* TOOLBAR */
+/* ── TOOLBAR ── */
 .tb{display:flex;align-items:center;gap:8px}
 .sw{position:relative;flex:1}
 .sw input{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:9px 12px 9px 32px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;box-shadow:var(--sh)}
@@ -93,7 +87,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:13px}
 .cbadge{color:var(--muted);font-size:13px;white-space:nowrap;font-weight:700}
 
-/* VIDEO CARDS */
+/* ── VIDEO CARDS ── */
 #vl,#bl,#hl2{display:flex;flex-direction:column;gap:10px}
 .vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:box-shadow .18s}
 .vc:hover{box-shadow:var(--sh2)}
@@ -110,9 +104,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .fsel{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:9px 10px;font-size:13px;font-family:inherit;cursor:pointer;outline:none}
 .fsel:focus{border-color:var(--accent)}
 
-/* MY PAGE */
+/* ── MY PAGE ── */
 .my-profile{padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:10px}
-.my-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a78bfa);display:flex;align-items:center;justify-content:center;font-size:32px}
+.my-avatar-wrap{position:relative;cursor:pointer;width:72px;height:72px}
+.my-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a78bfa);display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden}
+.my-avatar img{width:100%;height:100%;object-fit:cover;display:none;border-radius:50%}
+.my-avatar-edit{position:absolute;bottom:0;right:0;background:var(--accent);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
 .my-email{font-size:13px;color:var(--muted);word-break:break-all;text-align:center}
 .my-stats{display:flex;gap:10px;width:100%;margin-top:4px}
 .my-stat{flex:1;background:var(--bg3);border-radius:10px;padding:12px 6px;text-align:center}
@@ -121,12 +118,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .my-row{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;font-size:15px;font-weight:700}
 .my-row:last-child{border-bottom:none}
 .my-row:hover{background:var(--bg3)}
-.my-row:active{background:#eef2ff}
 .my-row-icon{font-size:22px;width:32px;text-align:center}
 .my-row-arr{margin-left:auto;color:var(--muted);font-size:18px}
 .my-row.danger{color:var(--red)}
 
-/* HISTORY */
+/* ── HISTORY ── */
+#hl{display:flex;flex-direction:column;gap:10px}
 .hc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px;cursor:pointer;transition:box-shadow .18s}
 .hc:hover{box-shadow:var(--sh2)}
 .hc-info{flex:1;min-width:0}
@@ -136,11 +133,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .hc-views{font-size:22px;font-weight:900;color:var(--accent)}
 .hc-label{font-size:11px;color:var(--muted)}
 
-/* EMPTY */
+/* ── PLAYLIST ── */
+.pl-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px}
+.pl-name{flex:1;font-weight:700;font-size:15px}
+.pl-cnt{font-size:12px;color:var(--muted);margin-top:2px}
+.pl-btn{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s}
+.pl-btn:hover{border-color:var(--accent);color:var(--accent)}
+.pl-btn.danger:hover{border-color:var(--red);color:var(--red)}
+
+/* ── EMPTY ── */
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty-ic{font-size:46px;margin-bottom:12px;opacity:.4}
 
-/* TOAST */
+/* ── TOAST ── */
 #ta{position:fixed;bottom:calc(var(--nav)+10px);right:14px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
 .toast{background:#fff;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 16px;font-size:13px;max-width:250px;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;box-shadow:var(--sh2)}
 .toast.show{opacity:1;transform:translateX(0)}
@@ -149,10 +154,25 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 </head>
 <body>
 
+<!-- ロゴSVG定義 -->
+<svg style="display:none">
+  <defs>
+    <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a843;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#8b6914;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+</svg>
+
 <!-- AUTH -->
 <div id="s-auth">
   <div class="abox">
-    <div class="logo">Private<em>Vault</em></div>
+    <div class="auth-logo">
+      <svg width="160" height="56" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="72" font-family="Georgia,serif" font-size="72" font-weight="bold" letter-spacing="2" fill="#1a1b2e">PRIVATE</text>
+        <text x="222" y="72" font-family="Georgia,serif" font-size="72" font-weight="bold" letter-spacing="2" fill="url(#gld)">VAULT</text>
+      </svg>
+    </div>
     <div class="asub">お気に入りリスト</div>
     <input id="f-em" type="email" placeholder="メールアドレス" autocomplete="email">
     <div class="pw-wrap">
@@ -170,7 +190,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 <!-- APP -->
 <div id="s-app">
   <header class="hd">
-    <div class="logo" onclick="switchTab('home')" style="cursor:pointer">Private<em>Vault</em></div>
+    <div class="hd-logo" onclick="switchTab('home')">
+      <svg width="130" height="32" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="62" font-family="Georgia,serif" font-size="62" font-weight="bold" fill="#1a1b2e">PRIVATE</text>
+        <text x="222" y="62" font-family="Georgia,serif" font-size="62" font-weight="bold" fill="url(#gld)">VAULT</text>
+      </svg>
+    </div>
     <div class="hd-sp"></div>
   </header>
 
@@ -182,6 +207,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
         <button class="btn-add" onclick="addVideo()">＋ 追加</button>
       </div>
       <div class="card fbar"><div class="fbar-row" id="fl"></div></div>
+      <div id="vl"></div>
     </div>
   </div>
 
@@ -196,13 +222,11 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     </div>
   </div>
 
-  <!-- ブックマーク（フォルダ別） -->
+  <!-- ブックマーク -->
   <div class="tab" id="tab-bookmark">
     <div class="wrap">
       <div class="card fbar"><div class="fbar-row" id="fl2"></div></div>
-      <div class="tb">
-        <span class="cbadge" id="cbadge3">0件</span>
-      </div>
+      <span class="cbadge" id="cbadge3">0件</span>
       <div id="bl"><div class="empty"><div class="empty-ic">🔖</div><p>ブックマークがありません</p></div></div>
     </div>
   </div>
@@ -212,7 +236,14 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div class="wrap">
       <div class="card">
         <div class="my-profile">
-          <div class="my-avatar">👤</div>
+          <div class="my-avatar-wrap" onclick="changeAvatar()">
+            <div class="my-avatar" id="my-avatar">
+              <img id="my-avatar-img" src="" alt="">
+              <span id="my-avatar-icon">👤</span>
+            </div>
+            <div class="my-avatar-edit">✏️</div>
+          </div>
+          <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="onAvatarChange(event)">
           <div class="my-email" id="my-email"></div>
           <div class="my-stats">
             <div class="my-stat"><div class="my-stat-n" id="my-total">0</div><div class="my-stat-l">登録数</div></div>
@@ -222,30 +253,19 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
         </div>
       </div>
       <div class="card">
-        <div class="my-row" onclick="showMySection('history')">
-          <span class="my-row-icon">🕐</span>再生履歴<span class="my-row-arr">›</span>
-        </div>
-        <div class="my-row" onclick="showMySection('playlist')">
-          <span class="my-row-icon">📋</span>再生リスト<span class="my-row-arr">›</span>
-        </div>
-        <div class="my-row" onclick="doExport()">
-          <span class="my-row-icon">⬇️</span>データ出力<span class="my-row-arr">›</span>
-        </div>
-        <div class="my-row" onclick="showMySection('settings')">
-          <span class="my-row-icon">⚙️</span>設定<span class="my-row-arr">›</span>
-        </div>
-        <div class="my-row danger" onclick="doLogout()">
-          <span class="my-row-icon">🚪</span>ログアウト<span class="my-row-arr">›</span>
-        </div>
+        <div class="my-row" onclick="showMySection('history')"><span class="my-row-icon">🕐</span>再生履歴<span class="my-row-arr">›</span></div>
+        <div class="my-row" onclick="showMySection('playlist')"><span class="my-row-icon">📋</span>再生リスト<span class="my-row-arr">›</span></div>
+        <div class="my-row" onclick="doExport()"><span class="my-row-icon">⬇️</span>データ出力<span class="my-row-arr">›</span></div>
+        <div class="my-row" onclick="showMySection('settings')"><span class="my-row-icon">⚙️</span>設定<span class="my-row-arr">›</span></div>
       </div>
     </div>
   </div>
 
-  <!-- マイ：再生履歴 -->
+  <!-- 再生履歴 -->
   <div class="tab" id="tab-history">
     <div class="wrap">
       <div style="display:flex;align-items:center;gap:10px">
-        <button onclick="backToMy()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">‹</button>
+        <button onclick="backToMy()" style="background:none;border:none;font-size:26px;cursor:pointer;color:var(--muted);line-height:1">‹</button>
         <span class="section-title">再生履歴</span>
         <span style="flex:1"></span>
         <button onclick="clearHistory()" style="background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px">消去</button>
@@ -254,53 +274,41 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     </div>
   </div>
 
-  <!-- マイ：再生リスト -->
+  <!-- 再生リスト -->
   <div class="tab" id="tab-playlist">
     <div class="wrap">
       <div style="display:flex;align-items:center;gap:10px">
-        <button onclick="backToMy()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">‹</button>
+        <button onclick="backToMy()" style="background:none;border:none;font-size:26px;cursor:pointer;color:var(--muted);line-height:1">‹</button>
         <span class="section-title">再生リスト</span>
-        <span class="cbadge" style="margin-left:auto" id="cbadge4">0件</span>
+        <span style="flex:1"></span>
+        <button onclick="addPlaylist()" style="background:var(--accent);border:none;color:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700">＋ 追加</button>
       </div>
-      <div id="hl2"><div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div></div>
+      <div id="pl-list"><div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div></div>
     </div>
   </div>
 
-  <!-- マイ：設定 -->
+  <!-- 設定 -->
   <div class="tab" id="tab-settings">
     <div class="wrap">
       <div style="display:flex;align-items:center;gap:10px">
-        <button onclick="backToMy()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">‹</button>
+        <button onclick="backToMy()" style="background:none;border:none;font-size:26px;cursor:pointer;color:var(--muted);line-height:1">‹</button>
         <span class="section-title">設定</span>
       </div>
       <div class="card">
-        <div class="my-row" onclick="changeEmail()">
-          <span class="my-row-icon">📧</span>メールアドレス変更<span class="my-row-arr">›</span>
-        </div>
-        <div class="my-row" onclick="changePassword()">
-          <span class="my-row-icon">🔑</span>パスワード変更<span class="my-row-arr">›</span>
-        </div>
-        <div class="my-row danger" onclick="deleteAllData()">
-          <span class="my-row-icon">🗑️</span>全データ削除<span class="my-row-arr">›</span>
-        </div>
+        <div class="my-row" onclick="changeEmail()"><span class="my-row-icon">📧</span>メールアドレス変更<span class="my-row-arr">›</span></div>
+        <div class="my-row" onclick="changePassword()"><span class="my-row-icon">🔑</span>パスワード変更<span class="my-row-arr">›</span></div>
+        <div class="my-row danger" onclick="doLogout()"><span class="my-row-icon">🚪</span>ログアウト<span class="my-row-arr">›</span></div>
+        <div class="my-row danger" onclick="deleteAllData()"><span class="my-row-icon">🗑️</span>全データ削除<span class="my-row-arr">›</span></div>
       </div>
     </div>
   </div>
 
   <!-- BOTTOM NAV -->
   <nav class="bnav">
-    <button class="bnav-btn on" id="nav-home" onclick="switchTab('home')">
-      <span class="bnav-icon">🏠</span>ホーム
-    </button>
-    <button class="bnav-btn" id="nav-search" onclick="switchTab('search')">
-      <span class="bnav-icon">🔍</span>検索
-    </button>
-    <button class="bnav-btn" id="nav-bookmark" onclick="switchTab('bookmark')">
-      <span class="bnav-icon">🔖</span>ブックマーク
-    </button>
-    <button class="bnav-btn" id="nav-my" onclick="switchTab('my')">
-      <span class="bnav-icon">👤</span>マイページ
-    </button>
+    <button class="bnav-btn on" id="nav-home" onclick="switchTab('home')"><span class="bnav-icon">🏠</span>ホーム</button>
+    <button class="bnav-btn" id="nav-search" onclick="switchTab('search')"><span class="bnav-icon">🔍</span>検索</button>
+    <button class="bnav-btn" id="nav-bookmark" onclick="switchTab('bookmark')"><span class="bnav-icon">🔖</span>ブックマーク</button>
+    <button class="bnav-btn" id="nav-my" onclick="switchTab('my')"><span class="bnav-icon">👤</span>マイページ</button>
   </nav>
 </div>
 
@@ -319,12 +327,11 @@ var AUTH=firebase.auth();
 var DB=firebase.firestore();
 var STS=firebase.firestore.FieldValue.serverTimestamp;
 
-var me=null,videos=[],folders=[];
-var unsubV=null,unsubF=null;
-var curF=null,curF2=null,q="",q2="",dragId=null;
-var currentTab="home";
+var me=null,videos=[],folders=[],playlists=[];
+var unsubV=null,unsubF=null,unsubPL=null;
+var curF=null,curF2=null,q2="",dragId=null;
 
-// ── Auth ──────────────────────────────────────────────────
+// ── 画面切替 ─────────────────────────────────────────────
 function showAuth(){
   document.getElementById("s-auth").style.cssText="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:#f5f6fa";
   document.getElementById("s-app").style.display="none";
@@ -333,13 +340,18 @@ function showApp(){
   document.getElementById("s-auth").style.display="none";
   document.getElementById("s-app").style.cssText="display:flex;flex-direction:column;min-height:100vh";
 }
+
+// ── Auth ─────────────────────────────────────────────────
 AUTH.onAuthStateChanged(function(user){
   me=user;
   if(user){
     setBtnLoading(false);hideMsg();showApp();
     document.getElementById("my-email").textContent=user.email;
     startListen();
-  } else { stopListen();showAuth(); }
+    loadAvatar();
+  } else {
+    stopListen();showAuth();
+  }
 });
 function doLogin(){
   var email=document.getElementById("f-em").value.trim();
@@ -347,7 +359,7 @@ function doLogin(){
   if(!email||!pw) return showMsg("メールとパスワードを入力してください","err");
   setBtnLoading(true);showMsg("認証中…","ok");
   AUTH.signInWithEmailAndPassword(email,pw)
-    .catch(function(e){ setBtnLoading(false);showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
+    .catch(function(e){setBtnLoading(false);showMsg(eMsg(e.code)+" ["+e.code+"]","err");});
 }
 function doSignup(){
   var email=document.getElementById("f-em").value.trim();
@@ -356,9 +368,9 @@ function doSignup(){
   if(pw.length<6) return showMsg("パスワードは6文字以上にしてください","err");
   setBtnLoading(true);showMsg("登録中…","ok");
   AUTH.createUserWithEmailAndPassword(email,pw)
-    .catch(function(e){ setBtnLoading(false);showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
+    .catch(function(e){setBtnLoading(false);showMsg(eMsg(e.code)+" ["+e.code+"]","err");});
 }
-function doLogout(){ if(confirm("ログアウトしますか？")) AUTH.signOut(); }
+function doLogout(){if(confirm("ログアウトしますか？"))AUTH.signOut();}
 function togglePw(){
   var inp=document.getElementById("f-pw"),btn=document.getElementById("pw-eye");
   inp.type=inp.type==="password"?"text":"password";
@@ -373,39 +385,36 @@ function showMsg(txt,type){
   var el=document.getElementById("amsg");
   el.textContent=txt;el.className="amsg "+type;el.style.display="block";
 }
-function hideMsg(){ document.getElementById("amsg").style.display="none"; }
+function hideMsg(){document.getElementById("amsg").style.display="none";}
 function eMsg(code){
   return({"auth/invalid-email":"メール形式が正しくありません","auth/email-already-in-use":"このメールは既に登録されています","auth/weak-password":"パスワードは6文字以上にしてください","auth/user-not-found":"ユーザーが見つかりません","auth/wrong-password":"パスワードが違います","auth/invalid-credential":"メールまたはパスワードが違います","auth/too-many-requests":"試行回数が多すぎます","auth/network-request-failed":"ネットワークエラーです","auth/operation-not-allowed":"Firebase でメール認証を有効にしてください"})[code]||"エラー: "+code;
 }
 
-// ── Tab ───────────────────────────────────────────────────
-var mainTabs=["home","search","bookmark","my"];
+// ── タブ ─────────────────────────────────────────────────
 function switchTab(name){
-  currentTab=name;
   document.querySelectorAll(".tab").forEach(function(el){el.classList.remove("on");});
   document.getElementById("tab-"+name).classList.add("on");
   document.querySelectorAll(".bnav-btn").forEach(function(el){el.classList.remove("on");});
-  var nb=document.getElementById("nav-"+name);
-  if(nb) nb.classList.add("on");
-  if(name==="my") updateMyPage();
-  if(name==="bookmark"){ renderBookmark(); }
-  if(name==="search"){ document.getElementById("i-q2").focus(); }
+  var nb=document.getElementById("nav-"+name);if(nb)nb.classList.add("on");
+  if(name==="my")updateMyPage();
+  if(name==="bookmark"){renderFolders2();renderBookmark();}
+  if(name==="search")document.getElementById("i-q2").focus();
 }
 function showMySection(sec){
   document.querySelectorAll(".tab").forEach(function(el){el.classList.remove("on");});
   document.getElementById("tab-"+sec).classList.add("on");
-  if(sec==="history") renderHistory();
-  if(sec==="playlist") renderPlaylist();
+  if(sec==="history")renderHistory();
+  if(sec==="playlist"){startPlaylistListen();renderPlaylists();}
 }
-function backToMy(){ switchTab("my"); }
+function backToMy(){switchTab("my");}
 
 // ── Firestore ─────────────────────────────────────────────
 function startListen(){
-  if(!me) return;
+  if(!me)return;
   var base=DB.collection("users").doc(me.uid);
   unsubF=base.collection("folders").orderBy("createdAt","asc").onSnapshot(function(s){
     folders=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    renderFolders();renderVideos();renderBookmark();
+    renderFolders();renderVideos();renderFolders2();renderBookmark();
   },function(e){toast("フォルダエラー:"+e.message,"err");});
   unsubV=base.collection("videos").orderBy("createdAt","desc").onSnapshot(function(s){
     videos=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
@@ -413,32 +422,42 @@ function startListen(){
   },function(e){toast("動画エラー:"+e.message,"err");});
 }
 function stopListen(){
-  if(unsubV){unsubV();unsubV=null;} if(unsubF){unsubF();unsubF=null;}
-  videos=[];folders=[];
+  if(unsubV){unsubV();unsubV=null;}
+  if(unsubF){unsubF();unsubF=null;}
+  if(unsubPL){unsubPL();unsubPL=null;}
+  videos=[];folders=[];playlists=[];
+}
+function startPlaylistListen(){
+  if(!me||unsubPL)return;
+  unsubPL=DB.collection("users").doc(me.uid).collection("playlists")
+    .orderBy("createdAt","asc").onSnapshot(function(s){
+      playlists=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+      renderPlaylists();
+    },function(e){toast("リストエラー:"+e.message,"err");});
 }
 
 // ── Video CRUD ────────────────────────────────────────────
 function addVideo(){
-  if(!me) return toast("ログインが必要です","warn");
+  if(!me)return toast("ログインが必要です","warn");
   var url=document.getElementById("i-url").value.trim();
-  if(!url) return toast("URLを入力してください","warn");
-  if(!isUrl(url)) return toast("URLが正しくありません","warn");
+  if(!url)return toast("URLを入力してください","warn");
+  if(!isUrl(url))return toast("URLが正しくありません","warn");
   DB.collection("users").doc(me.uid).collection("videos").add({
     url:url,title:guessTitle(url),folderId:curF||null,
     views:0,order:videos.length,createdAt:STS(),updatedAt:STS()
-  }).then(function(){ document.getElementById("i-url").value="";toast("追加しました ✓"); })
+  }).then(function(){document.getElementById("i-url").value="";toast("追加しました ✓");})
     .catch(function(e){toast("保存失敗:"+e.message,"err");});
 }
 function deleteVideo(id){
-  if(!confirm("削除しますか？")) return;
+  if(!confirm("削除しますか？"))return;
   DB.collection("users").doc(me.uid).collection("videos").doc(id).delete()
     .then(function(){toast("削除しました");})
     .catch(function(e){toast("削除失敗:"+e.message,"err");});
 }
 function editTitle(id){
-  var v=find(videos,id);if(!v) return;
+  var v=find(videos,id);if(!v)return;
   var t=prompt("新しいタイトル:",v.title);
-  if(!t||!t.trim()) return;
+  if(!t||!t.trim())return;
   DB.collection("users").doc(me.uid).collection("videos").doc(id)
     .update({title:t.trim(),updatedAt:STS()})
     .then(function(){toast("タイトル更新 ✓");})
@@ -452,35 +471,36 @@ function openVideo(id,url){
 }
 
 // ── Folder CRUD ───────────────────────────────────────────
+function addFolder(){
+  var name=prompt("フォルダ名:");if(!name||!name.trim())return;
+  DB.collection("users").doc(me.uid).collection("folders").add({name:name.trim(),createdAt:STS()})
+    .then(function(){toast("フォルダ作成 ✓");})
+    .catch(function(e){toast("作成失敗:"+e.message,"err");});
+}
 function editFolderName(id){
-  var f=null;
-  for(var i=0;i<folders.length;i++){if(folders[i].id===id){f=folders[i];break;}}
-  if(!f) return;
+  var f=find(folders,id);if(!f)return;
   var name=prompt("フォルダ名を変更:",f.name);
-  if(!name||!name.trim()) return;
+  if(!name||!name.trim())return;
   DB.collection("users").doc(me.uid).collection("folders").doc(id)
     .update({name:name.trim()})
     .then(function(){toast("フォルダ名を変更しました ✓");})
     .catch(function(e){toast("変更失敗:"+e.message,"err");});
 }
-function addFolder(){
-  var name=prompt("フォルダ名:");if(!name||!name.trim()) return;
-  DB.collection("users").doc(me.uid).collection("folders").add({name:name.trim(),createdAt:STS()})
-    .then(function(){toast("フォルダ作成 ✓");})
-    .catch(function(e){toast("作成失敗:"+e.message,"err");});
-}
 function deleteFolder(id){
-  if(!confirm("フォルダを削除しますか？（動画は残ります）")) return;
+  if(!confirm("フォルダを削除しますか？（動画は残ります）"))return;
   var uid=me.uid,batch=DB.batch();
   videos.filter(function(v){return v.folderId===id;}).forEach(function(v){
     batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{folderId:null});
   });
   batch.delete(DB.collection("users").doc(uid).collection("folders").doc(id));
-  batch.commit().then(function(){ if(curF===id){curF=null;} if(curF2===id){curF2=null;} toast("フォルダ削除しました"); })
-    .catch(function(e){toast("削除失敗:"+e.message,"err");});
+  batch.commit().then(function(){
+    if(curF===id)curF=null;
+    if(curF2===id)curF2=null;
+    toast("フォルダ削除しました");
+  }).catch(function(e){toast("削除失敗:"+e.message,"err");});
 }
-function selFolder(id){ curF=id;renderFolders();renderVideos(); }
-function selFolder2(id){ curF2=id;renderFolders2();renderBookmark(); }
+function selFolder(id){curF=id;renderFolders();renderVideos();}
+function selFolder2(id){curF2=id;renderFolders2();renderBookmark();}
 function moveFolder(vid,fid){
   DB.collection("users").doc(me.uid).collection("videos").doc(vid)
     .update({folderId:fid||null,updatedAt:STS()})
@@ -488,7 +508,30 @@ function moveFolder(vid,fid){
     .catch(function(e){toast("移動失敗:"+e.message,"err");});
 }
 
-// ── Export / Settings ─────────────────────────────────────
+// ── Playlist CRUD ─────────────────────────────────────────
+function addPlaylist(){
+  var name=prompt("再生リスト名:");if(!name||!name.trim())return;
+  DB.collection("users").doc(me.uid).collection("playlists").add({name:name.trim(),createdAt:STS(),items:[]})
+    .then(function(){toast("再生リストを作成しました ✓");})
+    .catch(function(e){toast("作成失敗:"+e.message,"err");});
+}
+function editPlaylist(id){
+  var pl=find(playlists,id);if(!pl)return;
+  var name=prompt("リスト名を変更:",pl.name);
+  if(!name||!name.trim())return;
+  DB.collection("users").doc(me.uid).collection("playlists").doc(id)
+    .update({name:name.trim()})
+    .then(function(){toast("リスト名を変更しました ✓");})
+    .catch(function(e){toast("変更失敗:"+e.message,"err");});
+}
+function deletePlaylist(id){
+  if(!confirm("再生リストを削除しますか？"))return;
+  DB.collection("users").doc(me.uid).collection("playlists").doc(id).delete()
+    .then(function(){toast("削除しました");})
+    .catch(function(e){toast("削除失敗:"+e.message,"err");});
+}
+
+// ── Settings ─────────────────────────────────────────────
 function doExport(){
   var data=videos.map(function(v){
     var fn="未分類";
@@ -496,7 +539,7 @@ function doExport(){
     return{タイトル:v.title,URL:v.url,フォルダ:fn,閲覧数:v.views||0,
       追加日:v.createdAt&&v.createdAt.toDate?v.createdAt.toDate().toLocaleString("ja"):""};
   });
-  if(!data.length) return toast("データがありません","warn");
+  if(!data.length)return toast("データがありません","warn");
   dlB(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"privatevault.json");
   var hdr=Object.keys(data[0]).join(",");
   var rows=data.map(function(r){return Object.values(r).map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(",");});
@@ -505,34 +548,58 @@ function doExport(){
 }
 function dlB(blob,name){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);}
 function changeEmail(){
-  var e=prompt("新しいメールアドレス:");
-  if(!e||!e.trim()) return;
+  var e=prompt("新しいメールアドレス:");if(!e||!e.trim())return;
   AUTH.currentUser.updateEmail(e.trim())
     .then(function(){toast("メールアドレスを変更しました ✓");document.getElementById("my-email").textContent=e.trim();})
     .catch(function(e){toast("変更失敗:"+e.message,"err");});
 }
 function changePassword(){
-  var p=prompt("新しいパスワード（6文字以上）:");
-  if(!p||p.length<6) return toast("6文字以上入力してください","warn");
+  var p=prompt("新しいパスワード（6文字以上）:");if(!p||p.length<6)return toast("6文字以上入力してください","warn");
   AUTH.currentUser.updatePassword(p)
     .then(function(){toast("パスワードを変更しました ✓");})
     .catch(function(e){toast("変更失敗:"+e.message,"err");});
 }
 function deleteAllData(){
-  if(!confirm("全データを削除しますか？この操作は取り消せません")) return;
-  if(!confirm("本当に削除しますか？")) return;
+  if(!confirm("全データを削除しますか？この操作は取り消せません"))return;
+  if(!confirm("本当に削除しますか？"))return;
   var uid=me.uid,batch=DB.batch();
   videos.forEach(function(v){batch.delete(DB.collection("users").doc(uid).collection("videos").doc(v.id));});
   folders.forEach(function(f){batch.delete(DB.collection("users").doc(uid).collection("folders").doc(f.id));});
   batch.commit().then(function(){toast("全データを削除しました");}).catch(function(e){toast("削除失敗:"+e.message,"err");});
 }
 function clearHistory(){
-  if(!confirm("再生履歴をリセットしますか？")) return;
+  if(!confirm("再生履歴をリセットしますか？"))return;
   var uid=me.uid,batch=DB.batch();
   videos.filter(function(v){return v.views>0;}).forEach(function(v){
     batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{views:0,lastViewed:null});
   });
-  batch.commit().then(function(){toast("履歴を消去しました");}).catch(function(e){toast("エラー:"+e.message,"err");});
+  batch.commit().then(function(){toast("履歴を消去しました");renderHistory();})
+    .catch(function(e){toast("エラー:"+e.message,"err");});
+}
+
+// ── Avatar ───────────────────────────────────────────────
+function changeAvatar(){document.getElementById("avatar-input").click();}
+function onAvatarChange(e){
+  var file=e.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var img=document.getElementById("my-avatar-img");
+    var icon=document.getElementById("my-avatar-icon");
+    img.src=ev.target.result;img.style.display="block";icon.style.display="none";
+    try{localStorage.setItem("pv_avatar",ev.target.result);}catch(er){}
+    toast("プロフィール画像を変更しました ✓");
+  };
+  reader.readAsDataURL(file);
+}
+function loadAvatar(){
+  try{
+    var saved=localStorage.getItem("pv_avatar");
+    if(saved){
+      var img=document.getElementById("my-avatar-img");
+      var icon=document.getElementById("my-avatar-icon");
+      if(img&&icon){img.src=saved;img.style.display="block";icon.style.display="none";}
+    }
+  }catch(e){}
 }
 
 // ── Drag & Drop ───────────────────────────────────────────
@@ -542,10 +609,10 @@ function onDO(e,id){e.preventDefault();if(dragId!==id)e.currentTarget.classList.
 function onDL(e){e.currentTarget.classList.remove("over");}
 function onDrop(e,tid){
   e.preventDefault();e.currentTarget.classList.remove("over");
-  if(!dragId||dragId===tid) return;
-  var list=filteredHome(),si=-1,ti=-1;
+  if(!dragId||dragId===tid)return;
+  var list=videos.slice(),si=-1,ti=-1;
   for(var i=0;i<list.length;i++){if(list[i].id===dragId)si=i;if(list[i].id===tid)ti=i;}
-  if(si<0||ti<0) return;
+  if(si<0||ti<0)return;
   var arr=list.slice(),item=arr.splice(si,1)[0];arr.splice(ti,0,item);
   var uid=me.uid,batch=DB.batch();
   arr.forEach(function(v,i){batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{order:i});});
@@ -554,14 +621,6 @@ function onDrop(e,tid){
 }
 
 // ── Render ────────────────────────────────────────────────
-function filteredHome(){
-  var list=videos.slice();
-  if(curF!==null) list=list.filter(function(v){return v.folderId===curF;});
-  if(q) list=list.filter(function(v){return v.title.toLowerCase().indexOf(q)>=0||v.url.toLowerCase().indexOf(q)>=0;});
-  list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
-  return list;
-}
-
 function cardHTML(v){
   var fn="";
   for(var i=0;i<folders.length;i++){if(folders[i].id===v.folderId){fn=folders[i].name;break;}}
@@ -577,8 +636,7 @@ function cardHTML(v){
     +'<button class="btn-dl" onclick="deleteVideo(\''+v.id+'\')">削除</button>'
     +'</div>'
     +'<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'
-    +'</div>'
-    +'</div></div>';
+    +'</div></div></div>';
 }
 
 function renderFolders(){
@@ -586,19 +644,15 @@ function renderFolders(){
   folders.forEach(function(f){
     var cnt=videos.filter(function(v){return v.folderId===f.id;}).length;
     h+='<button class="fc'+(curF===f.id?' on':'')+'" onclick="selFolder(\''+f.id+'\')">'+esc(f.name)+' ('+cnt+')</button>';
-    
   });
   h+='<button class="btn-af" onclick="addFolder()">＋ 追加</button>';
   if(curF!==null){
-    var cf=null;
-    for(var i=0;i<folders.length;i++){if(folders[i].id===curF){cf=folders[i];break;}}
-    if(cf){
-      h+='<button class="btn-fop" onclick="editFolderName(\''+curF+'\')" title="編集">✏️</button>';
-      h+='<button class="btn-fop danger" onclick="deleteFolder(\''+curF+'\')" title="削除">🗑</button>';
-    }
+    h+='<button class="btn-fop" onclick="editFolderName(\''+curF+'\')">✏️</button>';
+    h+='<button class="btn-fop danger" onclick="deleteFolder(\''+curF+'\')">🗑</button>';
   }
   document.getElementById("fl").innerHTML=h;
 }
+
 function renderFolders2(){
   var h='<button class="fc'+(curF2===null?' on':'')+'" onclick="selFolder2(null)">すべて ('+videos.length+')</button>';
   folders.forEach(function(f){
@@ -609,39 +663,30 @@ function renderFolders2(){
 }
 
 function renderVideos(){
-  var list=filteredHome();
-  var cb=document.getElementById("cbadge");if(cb)cb.textContent=list.length+"件";
+  var list=videos.slice();
+  if(curF!==null)list=list.filter(function(v){return v.folderId===curF;});
+  list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
   var c=document.getElementById("vl");
-  if(!list.length){c.innerHTML='';return;}
-  c.innerHTML=list.map(cardHTML).join("");
+  c.innerHTML=list.length?list.map(cardHTML).join(""):"";
 }
 
-function onSearch(e){ q=e.target.value.toLowerCase();renderVideos(); }
-function onSearch2(e){ q2=e.target.value.toLowerCase();renderSearch(); }
-
+function onSearch2(e){q2=e.target.value.toLowerCase();renderSearch();}
 function renderSearch(){
   var c=document.getElementById("vl2");
-  if(!q2){
-    document.getElementById("cbadge2").textContent="0件";
-    c.innerHTML='<div class="empty"><div class="empty-ic">🔍</div><p>キーワードを入力してください</p></div>';
-    return;
-  }
+  if(!q2){document.getElementById("cbadge2").textContent="0件";c.innerHTML='<div class="empty"><div class="empty-ic">🔍</div><p>キーワードを入力してください</p></div>';return;}
   var list=videos.filter(function(v){return v.title.toLowerCase().indexOf(q2)>=0||v.url.toLowerCase().indexOf(q2)>=0;});
   list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
   document.getElementById("cbadge2").textContent=list.length+"件";
-  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🔍</div><p>検索結果がありません</p></div>';return;}
-  c.innerHTML=list.map(cardHTML).join("");
+  c.innerHTML=list.length?list.map(cardHTML).join(""):'<div class="empty"><div class="empty-ic">🔍</div><p>検索結果がありません</p></div>';
 }
 
 function renderBookmark(){
-  renderFolders2();
   var list=videos.slice();
-  if(curF2!==null) list=list.filter(function(v){return v.folderId===curF2;});
+  if(curF2!==null)list=list.filter(function(v){return v.folderId===curF2;});
   list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
   document.getElementById("cbadge3").textContent=list.length+"件";
   var c=document.getElementById("bl");
-  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🔖</div><p>ブックマークがありません</p></div>';return;}
-  c.innerHTML=list.map(cardHTML).join("");
+  c.innerHTML=list.length?list.map(cardHTML).join(""):'<div class="empty"><div class="empty-ic">🔖</div><p>ブックマークがありません</p></div>';
 }
 
 function renderHistory(){
@@ -655,17 +700,18 @@ function renderHistory(){
   }).join("");
 }
 
-function renderPlaylist(){
-  var list=videos.slice();
-  list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
-  document.getElementById("cbadge4").textContent=list.length+"件";
-  var c=document.getElementById("hl2");
-  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div>';return;}
-  c.innerHTML=list.map(cardHTML).join("");
+function renderPlaylists(){
+  var c=document.getElementById("pl-list");if(!c)return;
+  if(!playlists.length){c.innerHTML='<div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div>';return;}
+  c.innerHTML=playlists.map(function(pl){
+    return '<div class="pl-card"><div><div class="pl-name">'+esc(pl.name)+'</div><div class="pl-cnt">'+(pl.items?pl.items.length:0)+'件</div></div>'
+      +'<button class="pl-btn" onclick="editPlaylist(\''+pl.id+'\')">編集</button>'
+      +'<button class="pl-btn danger" onclick="deletePlaylist(\''+pl.id+'\')">削除</button></div>';
+  }).join("");
 }
 
 function updateMyPage(){
-  if(!me) return;
+  if(!me)return;
   document.getElementById("my-total").textContent=videos.length;
   document.getElementById("my-folders").textContent=folders.length;
   document.getElementById("my-views").textContent=videos.reduce(function(s,v){return s+(v.views||0);},0);
