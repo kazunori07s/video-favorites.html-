@@ -178,7 +178,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
         <input id="i-url" type="url" placeholder="URLを入力してください">
         <button class="btn-add" onclick="addVideo()">＋ 追加</button>
       </div>
-      <div class="card fbar"><div class="fbar-row" id="fl"></div></div><p>URLを追加してください</p></div></div>
+      <div class="card fbar"><div class="fbar-row" id="fl"></div></div>
     </div>
   </div>
 
@@ -590,7 +590,7 @@ function renderVideos(){
   var list=filteredHome();
   var cb=document.getElementById("cbadge");if(cb)cb.textContent=list.length+"件";
   var c=document.getElementById("vl");
-  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🎬</div><p>'+(q?"検索結果がありません":"URLを追加してください")+'</p></div>';return;}
+  if(!list.length){c.innerHTML='';return;}
   c.innerHTML=list.map(cardHTML).join("");
 }
 
