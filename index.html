@@ -80,6 +80,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 
 .btn-af{background:transparent;border:1.5px dashed var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;transition:all .2s}
 .btn-af:hover{border-color:var(--accent);color:var(--accent)}
+.btn-fop{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:6px 10px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;transition:all .2s}
+.btn-fop:hover{border-color:var(--accent);color:var(--accent)}
+.btn-fop.danger:hover{border-color:var(--red);color:var(--red)}
 
 /* TOOLBAR */
 .tb{display:flex;align-items:center;gap:8px}
@@ -449,6 +452,17 @@ function openVideo(id,url){
 }
 
 // ── Folder CRUD ───────────────────────────────────────────
+function editFolderName(id){
+  var f=null;
+  for(var i=0;i<folders.length;i++){if(folders[i].id===id){f=folders[i];break;}}
+  if(!f) return;
+  var name=prompt("フォルダ名を変更:",f.name);
+  if(!name||!name.trim()) return;
+  DB.collection("users").doc(me.uid).collection("folders").doc(id)
+    .update({name:name.trim()})
+    .then(function(){toast("フォルダ名を変更しました ✓");})
+    .catch(function(e){toast("変更失敗:"+e.message,"err");});
+}
 function addFolder(){
   var name=prompt("フォルダ名:");if(!name||!name.trim()) return;
   DB.collection("users").doc(me.uid).collection("folders").add({name:name.trim(),createdAt:STS()})
@@ -575,6 +589,14 @@ function renderFolders(){
     
   });
   h+='<button class="btn-af" onclick="addFolder()">＋ 追加</button>';
+  if(curF!==null){
+    var cf=null;
+    for(var i=0;i<folders.length;i++){if(folders[i].id===curF){cf=folders[i];break;}}
+    if(cf){
+      h+='<button class="btn-fop" onclick="editFolderName(\''+curF+'\')" title="編集">✏️</button>';
+      h+='<button class="btn-fop danger" onclick="deleteFolder(\''+curF+'\')" title="削除">🗑</button>';
+    }
+  }
   document.getElementById("fl").innerHTML=h;
 }
 function renderFolders2(){
