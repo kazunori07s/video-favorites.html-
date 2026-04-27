@@ -178,12 +178,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
         <input id="i-url" type="url" placeholder="URLを入力してください">
         <button class="btn-add" onclick="addVideo()">＋ 追加</button>
       </div>
-      <div class="card fbar"><div class="fbar-row" id="fl"></div></div>
-      <div class="tb">
-        <div class="sw"><span class="si">🔍</span><input id="i-q" type="text" placeholder="検索…" oninput="onSearch(event)"></div>
-        <span class="cbadge" id="cbadge">0件</span>
-      </div>
-      <div id="vl"><div class="empty"><div class="empty-ic">🎬</div><p>URLを追加してください</p></div></div>
+      <div class="card fbar"><div class="fbar-row" id="fl"></div></div><p>URLを追加してください</p></div></div>
     </div>
   </div>
 
@@ -593,7 +588,7 @@ function renderFolders2(){
 
 function renderVideos(){
   var list=filteredHome();
-  document.getElementById("cbadge").textContent=list.length+"件";
+  var cb=document.getElementById("cbadge");if(cb)cb.textContent=list.length+"件";
   var c=document.getElementById("vl");
   if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🎬</div><p>'+(q?"検索結果がありません":"URLを追加してください")+'</p></div>';return;}
   c.innerHTML=list.map(cardHTML).join("");
