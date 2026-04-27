@@ -135,6 +135,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .hc-cnt{text-align:center;flex-shrink:0}
 .hc-views{font-size:22px;font-weight:900;color:var(--accent)}
 .hc-label{font-size:11px;color:var(--muted)}
+.pl-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px}
+.pl-name{flex:1;font-weight:700;font-size:15px}
+.pl-cnt{font-size:12px;color:var(--muted);margin-top:2px}
+.pl-btn{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .2s}
+.pl-btn:hover{border-color:var(--accent);color:var(--accent)}
+.pl-btn.danger:hover{border-color:var(--red);color:var(--red)}
 
 /* EMPTY */
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
@@ -212,7 +218,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div class="wrap">
       <div class="card">
         <div class="my-profile">
-          <div class="my-avatar">👤</div>
+          <div class="my-avatar" id="my-avatar" onclick="changeAvatar()" style="cursor:pointer;position:relative">
+          <img id="my-avatar-img" src="" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:none">
+          <span id="my-avatar-icon">👤</span>
+          <div style="position:absolute;bottom:0;right:0;background:var(--accent);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff">✏️</div>
+        </div>
+        <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="onAvatarChange(event)">
           <div class="my-email" id="my-email"></div>
           <div class="my-stats">
             <div class="my-stat"><div class="my-stat-n" id="my-total">0</div><div class="my-stat-l">登録数</div></div>
@@ -260,9 +271,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
       <div style="display:flex;align-items:center;gap:10px">
         <button onclick="backToMy()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">‹</button>
         <span class="section-title">再生リスト</span>
-        <span class="cbadge" style="margin-left:auto" id="cbadge4">0件</span>
+        <span style="flex:1"></span>
+        <button onclick="addPlaylist()" style="background:var(--accent);border:none;color:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700">＋ 追加</button>
       </div>
-      <div id="hl2"><div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div></div>
+      <div id="pl-list"><div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div></div>
     </div>
   </div>
 
@@ -339,6 +351,7 @@ AUTH.onAuthStateChanged(function(user){
     setBtnLoading(false);hideMsg();showApp();
     document.getElementById("my-email").textContent=user.email;
     startListen();
+    setTimeout(loadAvatar,300);
   } else { stopListen();showAuth(); }
 });
 function doLogin(){
@@ -411,8 +424,12 @@ function startListen(){
     videos=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     renderVideos();renderBookmark();renderSearch();updateMyPage();
   },function(e){toast("動画エラー:"+e.message,"err");});
+  startPlaylistListen();
 }
 function stopListen(){
+  if(unsubPL){unsubPL();unsubPL=null;}
+  playlists=[];
+
   if(unsubV){unsubV();unsubV=null;} if(unsubF){unsubF();unsubF=null;}
   videos=[];folders=[];
 }
@@ -672,6 +689,90 @@ function updateMyPage(){
 }
 
 // ── Utilities ─────────────────────────────────────────────
+
+// ── Avatar ────────────────────────────────────────────────
+function changeAvatar(){
+  document.getElementById("avatar-input").click();
+}
+function onAvatarChange(e){
+  var file=e.target.files[0];
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var img=document.getElementById("my-avatar-img");
+    var icon=document.getElementById("my-avatar-icon");
+    img.src=ev.target.result;
+    img.style.display="block";
+    icon.style.display="none";
+    localStorage.setItem("pv_avatar", ev.target.result);
+    toast("プロフィール画像を変更しました ✓");
+  };
+  reader.readAsDataURL(file);
+}
+function loadAvatar(){
+  var saved=localStorage.getItem("pv_avatar");
+  if(saved){
+    var img=document.getElementById("my-avatar-img");
+    var icon=document.getElementById("my-avatar-icon");
+    if(img&&icon){ img.src=saved; img.style.display="block"; icon.style.display="none"; }
+  }
+}
+
+// ── Playlist CRUD ─────────────────────────────────────────
+var playlists=[];
+var unsubPL=null;
+function startPlaylistListen(){
+  if(!me) return;
+  unsubPL=DB.collection("users").doc(me.uid).collection("playlists")
+    .orderBy("createdAt","asc")
+    .onSnapshot(function(s){
+      playlists=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+      renderPlaylists();
+    },function(e){toast("リストエラー:"+e.message,"err");});
+}
+function addPlaylist(){
+  var name=prompt("再生リスト名:");
+  if(!name||!name.trim()) return;
+  DB.collection("users").doc(me.uid).collection("playlists").add({
+    name:name.trim(),createdAt:STS(),items:[]
+  }).then(function(){toast("再生リストを作成しました ✓");})
+    .catch(function(e){toast("作成失敗:"+e.message,"err");});
+}
+function editPlaylist(id){
+  var pl=null;
+  for(var i=0;i<playlists.length;i++){if(playlists[i].id===id){pl=playlists[i];break;}}
+  if(!pl) return;
+  var name=prompt("リスト名を変更:",pl.name);
+  if(!name||!name.trim()) return;
+  DB.collection("users").doc(me.uid).collection("playlists").doc(id)
+    .update({name:name.trim()})
+    .then(function(){toast("リスト名を変更しました ✓");})
+    .catch(function(e){toast("変更失敗:"+e.message,"err");});
+}
+function deletePlaylist(id){
+  if(!confirm("再生リストを削除しますか？")) return;
+  DB.collection("users").doc(me.uid).collection("playlists").doc(id)
+    .delete()
+    .then(function(){toast("削除しました");})
+    .catch(function(e){toast("削除失敗:"+e.message,"err");});
+}
+function renderPlaylists(){
+  var c=document.getElementById("pl-list");
+  if(!c) return;
+  if(!playlists.length){
+    c.innerHTML='<div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div>';
+    return;
+  }
+  c.innerHTML=playlists.map(function(pl){
+    return '<div class="pl-card">'
+      +'<div><div class="pl-name">'+esc(pl.name)+'</div>'
+      +'<div class="pl-cnt">'+(pl.items?pl.items.length:0)+'件</div></div>'
+      +'<button class="pl-btn" onclick="editPlaylist(''+pl.id+'')">編集</button>'
+      +'<button class="pl-btn danger" onclick="deletePlaylist(''+pl.id+'')">削除</button>'
+      +'</div>';
+  }).join("");
+}
+
 function guessTitle(url){try{var u=new URL(url);return u.hostname.replace("www.","")+u.pathname;}catch(e){return url;}}
 function isUrl(s){try{new URL(s);return true;}catch(e){return false;}}
 function find(arr,id){for(var i=0;i<arr.length;i++){if(arr[i].id===id)return arr[i];}return null;}
