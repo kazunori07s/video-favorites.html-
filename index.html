@@ -110,7 +110,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
     <div class="logo">Private<em>Vault</em></div>
     <div class="asub">お気に入り動画リスト</div>
     <input id="f-em" type="email" placeholder="メールアドレス" autocomplete="email">
-    <input id="f-pw" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password">
+    <div style="position:relative">
+      <input id="f-pw" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password" style="padding-right:44px">
+      <button type="button" onclick="togglePw()" id="pw-eye" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#9094ab;padding:0;line-height:1">👁</button>
+    </div>
     <div class="abtns">
       <button class="btn-y" id="b-li" onclick="doLogin()">ログイン</button>
       <button class="btn-n" id="b-su" onclick="doSignup()">新規登録</button>
@@ -186,6 +189,17 @@ AUTH.onAuthStateChanged(function(user){
   }
 });
 
+function togglePw(){
+  var inp = document.getElementById("f-pw");
+  var btn = document.getElementById("pw-eye");
+  if(inp.type === "password"){
+    inp.type = "text";
+    btn.textContent = "🙈";
+  } else {
+    inp.type = "password";
+    btn.textContent = "👁";
+  }
+}
 function doLogin(){
   var email=document.getElementById("f-em").value.trim();
   var pw=document.getElementById("f-pw").value;
