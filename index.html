@@ -10,17 +10,17 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
 :root{
-  --bg:#f5f6fa;--bg2:#ffffff;--bg3:#f0f1f6;
+  --bg:#f5f6fa;--bg2:#fff;--bg3:#f0f1f6;
   --border:#e2e4ec;--accent:#4f7ef8;--red:#ff4757;
   --text:#1a1b2e;--muted:#9094ab;--r:14px;
-  --sh:0 1px 6px rgba(0,0,0,.07);--sh2:0 3px 16px rgba(0,0,0,.11);
+  --sh:0 1px 6px rgba(0,0,0,.07);--sh2:0 3px 16px rgba(0,0,0,.12);
+  --nav:58px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;-webkit-tap-highlight-color:transparent}
 
-/* ── AUTH ── */
+/* AUTH */
 #s-auth{display:none;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg)}
-#s-app{display:none;flex-direction:column;min-height:100vh}
 .abox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 28px;width:100%;max-width:360px;box-shadow:var(--sh2)}
 .logo{font-size:24px;font-weight:900;text-align:center;margin-bottom:4px;letter-spacing:-1px}
 .logo em{color:var(--accent);font-style:normal}
@@ -28,6 +28,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .abox input{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-size:15px;font-family:inherit;margin-bottom:10px;outline:none;transition:border-color .2s;display:block}
 .abox input:focus{border-color:var(--accent);background:#fff}
 .abox input::placeholder{color:var(--muted)}
+.pw-wrap{position:relative;margin-bottom:10px}
+.pw-wrap input{margin-bottom:0;padding-right:44px;width:100%}
+.pw-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:0;line-height:1}
 .abtns{display:flex;gap:8px;margin-top:6px}
 .btn-y{flex:1;border-radius:10px;padding:13px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;border:none;background:var(--accent);color:#fff;transition:opacity .2s}
 .btn-y:hover{opacity:.88}.btn-y:disabled{opacity:.5;cursor:not-allowed}
@@ -37,18 +40,38 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .amsg.err{background:#fff0f1;border:1px solid #ffcdd2;color:var(--red)}
 .amsg.ok{background:#f0faf4;border:1px solid #b2dfdb;color:#1b7a4e}
 
-/* ── HEADER ── */
-.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+/* APP */
+#s-app{display:none;flex-direction:column;min-height:100vh}
+.hd{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
 .hd .logo{font-size:18px}
 .hd-sp{flex:1}
-.btn-lo{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:13px;transition:all .2s;white-space:nowrap}
-.btn-lo:hover{border-color:var(--red);color:var(--red)}
+.hd-title{font-size:17px;font-weight:700}
 
-/* ── MAIN ── */
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -2px 10px rgba(0,0,0,.07)}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:transparent;cursor:pointer;font-family:inherit;color:var(--muted);font-size:10px;font-weight:700;transition:color .15s;padding:0}
+.bnav-btn.on{color:var(--accent)}
+.bnav-icon{font-size:22px;line-height:1}
+
+/* TABS */
+.tab{display:none;flex:1;overflow-y:auto;padding-bottom:calc(var(--nav)+8px)}
+.tab.on{display:block}
 .wrap{max-width:640px;width:100%;margin:0 auto;padding:14px;display:flex;flex-direction:column;gap:12px}
 
-/* ── フォルダバー ── */
-.fbar{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;box-shadow:var(--sh)}
+/* CARDS & COMMON */
+.section-title{font-size:16px;font-weight:700;padding:4px 0}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh)}
+
+/* ADD FORM */
+.af{padding:14px;display:flex;flex-direction:column;gap:8px}
+.af input{background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%}
+.af input:focus{border-color:var(--accent);background:#fff}
+.af input::placeholder{color:var(--muted)}
+.btn-add{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;width:100%;transition:opacity .2s}
+.btn-add:hover{opacity:.88}
+
+/* FOLDER BAR */
+.fbar{padding:12px}
 .fbar-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .fc{background:var(--bg3);border:1.5px solid var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;white-space:nowrap;transition:all .2s}
 .fc.on{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -58,15 +81,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .btn-af{background:transparent;border:1.5px dashed var(--border);color:var(--muted);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px;white-space:nowrap;transition:all .2s}
 .btn-af:hover{border-color:var(--accent);color:var(--accent)}
 
-/* ── ADD FORM ── */
-.af{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--sh)}
-.af input{background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s;width:100%}
-.af input:focus{border-color:var(--accent);background:#fff}
-.af input::placeholder{color:var(--muted)}
-.btn-add{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:15px;width:100%;transition:opacity .2s}
-.btn-add:hover{opacity:.88}
-
-/* ── TOOLBAR ── */
+/* TOOLBAR */
 .tb{display:flex;align-items:center;gap:8px}
 .sw{position:relative;flex:1}
 .sw input{width:100%;background:var(--bg2);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:9px 12px 9px 32px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;box-shadow:var(--sh)}
@@ -74,18 +89,16 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .sw input::placeholder{color:var(--muted)}
 .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:13px}
 .cbadge{color:var(--muted);font-size:13px;white-space:nowrap;font-weight:700}
-.btn-ex{background:var(--bg2);border:1.5px solid var(--border);color:var(--muted);border-radius:10px;padding:9px 14px;cursor:pointer;font-family:inherit;font-size:13px;transition:all .2s;white-space:nowrap;box-shadow:var(--sh);font-weight:700}
-.btn-ex:hover{border-color:var(--accent);color:var(--accent)}
 
-/* ── VIDEO LIST ── */
-#vl{display:flex;flex-direction:column;gap:10px}
+/* VIDEO CARDS */
+#vl,#bl,#hl2{display:flex;flex-direction:column;gap:10px}
 .vc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:box-shadow .18s}
 .vc:hover{box-shadow:var(--sh2)}
 .vc.drag{opacity:.4}.vc.over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-.vb{padding:14px;display:flex;flex-direction:row;gap:12px;align-items:stretch;overflow:hidden}
-.vtit{font-weight:700;font-size:17px;line-height:1.4;cursor:pointer;transition:color .15s;flex:1;display:flex;align-items:center;word-break:break-all}
+.vb{padding:14px;display:flex;flex-direction:row;gap:12px;align-items:center}
+.vtit{font-weight:700;font-size:17px;line-height:1.4;cursor:pointer;transition:color .15s;flex:1;word-break:break-all}
 .vtit:hover{color:var(--accent)}
-.vact-wrap{display:flex;flex-direction:column;gap:6px;flex-shrink:0;width:160px}
+.vact-wrap{display:flex;flex-direction:column;gap:6px;flex-shrink:0;width:152px}
 .vact{display:flex;gap:6px}
 .btn-ed{flex:1;background:#fff;border:2px solid var(--accent);color:var(--accent);border-radius:10px;padding:9px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center}
 .btn-ed:hover{background:#eef2ff}
@@ -93,11 +106,39 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .btn-dl:hover{background:#fff0f1}
 .fsel{width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:9px 10px;font-size:13px;font-family:inherit;cursor:pointer;outline:none}
 .fsel:focus{border-color:var(--accent)}
+
+/* MY PAGE */
+.my-profile{padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.my-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a78bfa);display:flex;align-items:center;justify-content:center;font-size:32px}
+.my-email{font-size:13px;color:var(--muted);word-break:break-all;text-align:center}
+.my-stats{display:flex;gap:10px;width:100%;margin-top:4px}
+.my-stat{flex:1;background:var(--bg3);border-radius:10px;padding:12px 6px;text-align:center}
+.my-stat-n{font-size:22px;font-weight:900;color:var(--accent)}
+.my-stat-l{font-size:11px;color:var(--muted);margin-top:2px}
+.my-row{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;font-size:15px;font-weight:700}
+.my-row:last-child{border-bottom:none}
+.my-row:hover{background:var(--bg3)}
+.my-row:active{background:#eef2ff}
+.my-row-icon{font-size:22px;width:32px;text-align:center}
+.my-row-arr{margin-left:auto;color:var(--muted);font-size:18px}
+.my-row.danger{color:var(--red)}
+
+/* HISTORY */
+.hc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px;cursor:pointer;transition:box-shadow .18s}
+.hc:hover{box-shadow:var(--sh2)}
+.hc-info{flex:1;min-width:0}
+.hc-title{font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px}
+.hc-url{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hc-cnt{text-align:center;flex-shrink:0}
+.hc-views{font-size:22px;font-weight:900;color:var(--accent)}
+.hc-label{font-size:11px;color:var(--muted)}
+
+/* EMPTY */
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty-ic{font-size:46px;margin-bottom:12px;opacity:.4}
 
-/* ── TOAST ── */
-#ta{position:fixed;bottom:20px;right:14px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
+/* TOAST */
+#ta{position:fixed;bottom:calc(var(--nav)+10px);right:14px;display:flex;flex-direction:column;gap:8px;z-index:9999;pointer-events:none}
 .toast{background:#fff;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 16px;font-size:13px;max-width:250px;opacity:0;transform:translateX(30px);transition:opacity .3s,transform .3s;box-shadow:var(--sh2)}
 .toast.show{opacity:1;transform:translateX(0)}
 .t-ok{border-left:3px solid #2ecc71}.t-warn{border-left:3px solid #f39c12}.t-err{border-left:3px solid var(--red)}
@@ -105,14 +146,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 </head>
 <body>
 
+<!-- AUTH -->
 <div id="s-auth">
   <div class="abox">
     <div class="logo">Private<em>Vault</em></div>
-    <div class="asub">お気に入り動画リスト</div>
+    <div class="asub">お気に入りリスト</div>
     <input id="f-em" type="email" placeholder="メールアドレス" autocomplete="email">
-    <div style="position:relative">
-      <input id="f-pw" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password" style="padding-right:44px">
-      <button type="button" onclick="togglePw()" id="pw-eye" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#9094ab;padding:0;line-height:1">👁</button>
+    <div class="pw-wrap">
+      <input id="f-pw" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password">
+      <button type="button" class="pw-eye" id="pw-eye" onclick="togglePw()">👁</button>
     </div>
     <div class="abtns">
       <button class="btn-y" id="b-li" onclick="doLogin()">ログイン</button>
@@ -122,29 +164,146 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 
+<!-- APP -->
 <div id="s-app">
   <header class="hd">
     <div class="logo">Private<em>Vault</em></div>
     <div class="hd-sp"></div>
-    <button class="btn-lo" onclick="doLogout()">ログアウト</button>
   </header>
-  <div class="wrap">
-    <div class="af">
-      <input id="i-url" type="url" placeholder="URLを入力してください">
-      <button class="btn-add" onclick="addVideo()">＋ 追加</button>
-    </div>
-    <div class="fbar">
-      <div class="fbar-row" id="fl"></div>
-    </div>
-    <div class="tb">
-      <div class="sw"><span class="si">🔍</span><input id="i-q" type="text" placeholder="検索…" oninput="onSearch(event)"></div>
-      <span class="cbadge" id="cbadge">0件</span>
-      <button class="btn-ex" onclick="doExport()">出力</button>
-    </div>
-    <div id="vl">
-      <div class="empty"><div class="empty-ic">🎬</div><p>動画を追加してください</p></div>
+
+  <!-- ホーム -->
+  <div class="tab on" id="tab-home">
+    <div class="wrap">
+      <div class="card af">
+        <input id="i-url" type="url" placeholder="URLを入力してください">
+        <button class="btn-add" onclick="addVideo()">＋ 追加</button>
+      </div>
+      <div class="card fbar"><div class="fbar-row" id="fl"></div></div>
+      <div class="tb">
+        <div class="sw"><span class="si">🔍</span><input id="i-q" type="text" placeholder="検索…" oninput="onSearch(event)"></div>
+        <span class="cbadge" id="cbadge">0件</span>
+      </div>
+      <div id="vl"><div class="empty"><div class="empty-ic">🎬</div><p>URLを追加してください</p></div></div>
     </div>
   </div>
+
+  <!-- 検索 -->
+  <div class="tab" id="tab-search">
+    <div class="wrap">
+      <div class="tb">
+        <div class="sw"><span class="si">🔍</span><input id="i-q2" type="text" placeholder="タイトル・URLで検索…" oninput="onSearch2(event)"></div>
+        <span class="cbadge" id="cbadge2">0件</span>
+      </div>
+      <div id="vl2"><div class="empty"><div class="empty-ic">🔍</div><p>キーワードを入力してください</p></div></div>
+    </div>
+  </div>
+
+  <!-- ブックマーク（フォルダ別） -->
+  <div class="tab" id="tab-bookmark">
+    <div class="wrap">
+      <div class="card fbar"><div class="fbar-row" id="fl2"></div></div>
+      <div class="tb">
+        <span class="cbadge" id="cbadge3">0件</span>
+      </div>
+      <div id="bl"><div class="empty"><div class="empty-ic">🔖</div><p>ブックマークがありません</p></div></div>
+    </div>
+  </div>
+
+  <!-- マイページ -->
+  <div class="tab" id="tab-my">
+    <div class="wrap">
+      <div class="card">
+        <div class="my-profile">
+          <div class="my-avatar">👤</div>
+          <div class="my-email" id="my-email"></div>
+          <div class="my-stats">
+            <div class="my-stat"><div class="my-stat-n" id="my-total">0</div><div class="my-stat-l">登録数</div></div>
+            <div class="my-stat"><div class="my-stat-n" id="my-folders">0</div><div class="my-stat-l">フォルダ</div></div>
+            <div class="my-stat"><div class="my-stat-n" id="my-views">0</div><div class="my-stat-l">総視聴</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="my-row" onclick="showMySection('history')">
+          <span class="my-row-icon">🕐</span>再生履歴<span class="my-row-arr">›</span>
+        </div>
+        <div class="my-row" onclick="showMySection('playlist')">
+          <span class="my-row-icon">📋</span>再生リスト<span class="my-row-arr">›</span>
+        </div>
+        <div class="my-row" onclick="doExport()">
+          <span class="my-row-icon">⬇️</span>データ出力<span class="my-row-arr">›</span>
+        </div>
+        <div class="my-row" onclick="showMySection('settings')">
+          <span class="my-row-icon">⚙️</span>設定<span class="my-row-arr">›</span>
+        </div>
+        <div class="my-row danger" onclick="doLogout()">
+          <span class="my-row-icon">🚪</span>ログアウト<span class="my-row-arr">›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- マイ：再生履歴 -->
+  <div class="tab" id="tab-history">
+    <div class="wrap">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="backToMy()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">‹</button>
+        <span class="section-title">再生履歴</span>
+        <span style="flex:1"></span>
+        <button onclick="clearHistory()" style="background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px">消去</button>
+      </div>
+      <div id="hl"><div class="empty"><div class="empty-ic">🕐</div><p>再生履歴がありません</p></div></div>
+    </div>
+  </div>
+
+  <!-- マイ：再生リスト -->
+  <div class="tab" id="tab-playlist">
+    <div class="wrap">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="backToMy()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">‹</button>
+        <span class="section-title">再生リスト</span>
+        <span class="cbadge" style="margin-left:auto" id="cbadge4">0件</span>
+      </div>
+      <div id="hl2"><div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div></div>
+    </div>
+  </div>
+
+  <!-- マイ：設定 -->
+  <div class="tab" id="tab-settings">
+    <div class="wrap">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="backToMy()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">‹</button>
+        <span class="section-title">設定</span>
+      </div>
+      <div class="card">
+        <div class="my-row" onclick="changeEmail()">
+          <span class="my-row-icon">📧</span>メールアドレス変更<span class="my-row-arr">›</span>
+        </div>
+        <div class="my-row" onclick="changePassword()">
+          <span class="my-row-icon">🔑</span>パスワード変更<span class="my-row-arr">›</span>
+        </div>
+        <div class="my-row danger" onclick="deleteAllData()">
+          <span class="my-row-icon">🗑️</span>全データ削除<span class="my-row-arr">›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bnav">
+    <button class="bnav-btn on" id="nav-home" onclick="switchTab('home')">
+      <span class="bnav-icon">🏠</span>ホーム
+    </button>
+    <button class="bnav-btn" id="nav-search" onclick="switchTab('search')">
+      <span class="bnav-icon">🔍</span>検索
+    </button>
+    <button class="bnav-btn" id="nav-bookmark" onclick="switchTab('bookmark')">
+      <span class="bnav-icon">🔖</span>ブックマーク
+    </button>
+    <button class="bnav-btn" id="nav-my" onclick="switchTab('my')">
+      <span class="bnav-icon">👤</span>マイページ
+    </button>
+  </nav>
 </div>
 
 <div id="ta"></div>
@@ -164,8 +323,10 @@ var STS=firebase.firestore.FieldValue.serverTimestamp;
 
 var me=null,videos=[],folders=[];
 var unsubV=null,unsubF=null;
-var curF=null,q="",sort="date",dragId=null;
+var curF=null,curF2=null,q="",q2="",dragId=null;
+var currentTab="home";
 
+// ── Auth ──────────────────────────────────────────────────
 function showAuth(){
   document.getElementById("s-auth").style.cssText="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:#f5f6fa";
   document.getElementById("s-app").style.display="none";
@@ -174,55 +335,37 @@ function showApp(){
   document.getElementById("s-auth").style.display="none";
   document.getElementById("s-app").style.cssText="display:flex;flex-direction:column;min-height:100vh";
 }
-
 AUTH.onAuthStateChanged(function(user){
   me=user;
   if(user){
-
-    setBtnLoading(false);
-    hideMsg();
-    showApp();
+    setBtnLoading(false);hideMsg();showApp();
+    document.getElementById("my-email").textContent=user.email;
     startListen();
-  } else {
-    stopListen();
-    showAuth();
-  }
+  } else { stopListen();showAuth(); }
 });
-
-function togglePw(){
-  var inp = document.getElementById("f-pw");
-  var btn = document.getElementById("pw-eye");
-  if(inp.type === "password"){
-    inp.type = "text";
-    btn.textContent = "🙈";
-  } else {
-    inp.type = "password";
-    btn.textContent = "👁";
-  }
-}
 function doLogin(){
   var email=document.getElementById("f-em").value.trim();
   var pw=document.getElementById("f-pw").value;
   if(!email||!pw) return showMsg("メールとパスワードを入力してください","err");
-  setBtnLoading(true);
-  showMsg("認証中…","ok");
+  setBtnLoading(true);showMsg("認証中…","ok");
   AUTH.signInWithEmailAndPassword(email,pw)
-    .then(function(r){ console.log("LOGIN OK",r.user.email); })
-    .catch(function(e){ setBtnLoading(false); showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
+    .catch(function(e){ setBtnLoading(false);showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
 }
 function doSignup(){
   var email=document.getElementById("f-em").value.trim();
   var pw=document.getElementById("f-pw").value;
   if(!email||!pw) return showMsg("メールとパスワードを入力してください","err");
   if(pw.length<6) return showMsg("パスワードは6文字以上にしてください","err");
-  setBtnLoading(true);
-  showMsg("登録中…","ok");
+  setBtnLoading(true);showMsg("登録中…","ok");
   AUTH.createUserWithEmailAndPassword(email,pw)
-    .then(function(r){ console.log("SIGNUP OK",r.user.email); })
-    .catch(function(e){ setBtnLoading(false); showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
+    .catch(function(e){ setBtnLoading(false);showMsg(eMsg(e.code)+" ["+e.code+"]","err"); });
 }
-function doLogout(){ AUTH.signOut(); }
-
+function doLogout(){ if(confirm("ログアウトしますか？")) AUTH.signOut(); }
+function togglePw(){
+  var inp=document.getElementById("f-pw"),btn=document.getElementById("pw-eye");
+  inp.type=inp.type==="password"?"text":"password";
+  btn.textContent=inp.type==="password"?"👁":"🙈";
+}
 function setBtnLoading(on){
   document.getElementById("b-li").disabled=on;
   document.getElementById("b-su").disabled=on;
@@ -237,36 +380,56 @@ function eMsg(code){
   return({"auth/invalid-email":"メール形式が正しくありません","auth/email-already-in-use":"このメールは既に登録されています","auth/weak-password":"パスワードは6文字以上にしてください","auth/user-not-found":"ユーザーが見つかりません","auth/wrong-password":"パスワードが違います","auth/invalid-credential":"メールまたはパスワードが違います","auth/too-many-requests":"試行回数が多すぎます","auth/network-request-failed":"ネットワークエラーです","auth/operation-not-allowed":"Firebase でメール認証を有効にしてください"})[code]||"エラー: "+code;
 }
 
+// ── Tab ───────────────────────────────────────────────────
+var mainTabs=["home","search","bookmark","my"];
+function switchTab(name){
+  currentTab=name;
+  document.querySelectorAll(".tab").forEach(function(el){el.classList.remove("on");});
+  document.getElementById("tab-"+name).classList.add("on");
+  document.querySelectorAll(".bnav-btn").forEach(function(el){el.classList.remove("on");});
+  var nb=document.getElementById("nav-"+name);
+  if(nb) nb.classList.add("on");
+  if(name==="my") updateMyPage();
+  if(name==="bookmark"){ renderBookmark(); }
+  if(name==="search"){ document.getElementById("i-q2").focus(); }
+}
+function showMySection(sec){
+  document.querySelectorAll(".tab").forEach(function(el){el.classList.remove("on");});
+  document.getElementById("tab-"+sec).classList.add("on");
+  if(sec==="history") renderHistory();
+  if(sec==="playlist") renderPlaylist();
+}
+function backToMy(){ switchTab("my"); }
+
+// ── Firestore ─────────────────────────────────────────────
 function startListen(){
   if(!me) return;
   var base=DB.collection("users").doc(me.uid);
   unsubF=base.collection("folders").orderBy("createdAt","asc").onSnapshot(function(s){
     folders=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    renderFolders();renderVideos();
+    renderFolders();renderVideos();renderBookmark();
   },function(e){toast("フォルダエラー:"+e.message,"err");});
   unsubV=base.collection("videos").orderBy("createdAt","desc").onSnapshot(function(s){
     videos=s.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    renderVideos();
+    renderVideos();renderBookmark();renderSearch();updateMyPage();
   },function(e){toast("動画エラー:"+e.message,"err");});
 }
 function stopListen(){
-  if(unsubV){unsubV();unsubV=null;}if(unsubF){unsubF();unsubF=null;}
+  if(unsubV){unsubV();unsubV=null;} if(unsubF){unsubF();unsubF=null;}
   videos=[];folders=[];
 }
 
+// ── Video CRUD ────────────────────────────────────────────
 function addVideo(){
   if(!me) return toast("ログインが必要です","warn");
   var url=document.getElementById("i-url").value.trim();
-  var title=guessTitle(url);
   if(!url) return toast("URLを入力してください","warn");
   if(!isUrl(url)) return toast("URLが正しくありません","warn");
   DB.collection("users").doc(me.uid).collection("videos").add({
-    url:url,title:title,folderId:curF||null,views:0,order:videos.length,
-    createdAt:STS(),updatedAt:STS()
-  }).then(function(){
-    document.getElementById("i-url").value="";
-    toast("追加しました ✓");
-  }).catch(function(e){toast("保存失敗:"+e.message,"err");});
+    url:url,title:guessTitle(url),folderId:curF||null,
+    views:0,order:videos.length,createdAt:STS(),updatedAt:STS()
+  }).then(function(){ document.getElementById("i-url").value="";toast("追加しました ✓"); })
+    .catch(function(e){toast("保存失敗:"+e.message,"err");});
 }
 function deleteVideo(id){
   if(!confirm("削除しますか？")) return;
@@ -286,10 +449,11 @@ function editTitle(id){
 function openVideo(id,url){
   var v=find(videos,id);
   DB.collection("users").doc(me.uid).collection("videos").doc(id)
-    .update({views:(v?v.views||0:0)+1}).catch(function(){});
+    .update({views:(v?v.views||0:0)+1,lastViewed:STS()}).catch(function(){});
   window.open(url,"_blank","noopener");
 }
 
+// ── Folder CRUD ───────────────────────────────────────────
 function addFolder(){
   var name=prompt("フォルダ名:");if(!name||!name.trim()) return;
   DB.collection("users").doc(me.uid).collection("folders").add({name:name.trim(),createdAt:STS()})
@@ -303,10 +467,11 @@ function deleteFolder(id){
     batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{folderId:null});
   });
   batch.delete(DB.collection("users").doc(uid).collection("folders").doc(id));
-  batch.commit().then(function(){if(curF===id)curF=null;toast("フォルダ削除しました");})
+  batch.commit().then(function(){ if(curF===id){curF=null;} if(curF2===id){curF2=null;} toast("フォルダ削除しました"); })
     .catch(function(e){toast("削除失敗:"+e.message,"err");});
 }
-function selFolder(id){curF=id;renderFolders();renderVideos();}
+function selFolder(id){ curF=id;renderFolders();renderVideos(); }
+function selFolder2(id){ curF2=id;renderFolders2();renderBookmark(); }
 function moveFolder(vid,fid){
   DB.collection("users").doc(me.uid).collection("videos").doc(vid)
     .update({folderId:fid||null,updatedAt:STS()})
@@ -314,8 +479,7 @@ function moveFolder(vid,fid){
     .catch(function(e){toast("移動失敗:"+e.message,"err");});
 }
 
-function onSearch(e){q=e.target.value.toLowerCase();renderVideos();}
-
+// ── Export / Settings ─────────────────────────────────────
 function doExport(){
   var data=videos.map(function(v){
     var fn="未分類";
@@ -324,14 +488,45 @@ function doExport(){
       追加日:v.createdAt&&v.createdAt.toDate?v.createdAt.toDate().toLocaleString("ja"):""};
   });
   if(!data.length) return toast("データがありません","warn");
-  dlB(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"video-favorites.json");
+  dlB(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),"privatevault.json");
   var hdr=Object.keys(data[0]).join(",");
   var rows=data.map(function(r){return Object.values(r).map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(",");});
-  setTimeout(function(){dlB(new Blob(["\uFEFF"+[hdr].concat(rows).join("\n")],{type:"text/csv"}),"video-favorites.csv");},300);
+  setTimeout(function(){dlB(new Blob(["\uFEFF"+[hdr].concat(rows).join("\n")],{type:"text/csv"}),"privatevault.csv");},300);
   toast("JSON & CSV をダウンロード ✓");
 }
 function dlB(blob,name){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);}
+function changeEmail(){
+  var e=prompt("新しいメールアドレス:");
+  if(!e||!e.trim()) return;
+  AUTH.currentUser.updateEmail(e.trim())
+    .then(function(){toast("メールアドレスを変更しました ✓");document.getElementById("my-email").textContent=e.trim();})
+    .catch(function(e){toast("変更失敗:"+e.message,"err");});
+}
+function changePassword(){
+  var p=prompt("新しいパスワード（6文字以上）:");
+  if(!p||p.length<6) return toast("6文字以上入力してください","warn");
+  AUTH.currentUser.updatePassword(p)
+    .then(function(){toast("パスワードを変更しました ✓");})
+    .catch(function(e){toast("変更失敗:"+e.message,"err");});
+}
+function deleteAllData(){
+  if(!confirm("全データを削除しますか？この操作は取り消せません")) return;
+  if(!confirm("本当に削除しますか？")) return;
+  var uid=me.uid,batch=DB.batch();
+  videos.forEach(function(v){batch.delete(DB.collection("users").doc(uid).collection("videos").doc(v.id));});
+  folders.forEach(function(f){batch.delete(DB.collection("users").doc(uid).collection("folders").doc(f.id));});
+  batch.commit().then(function(){toast("全データを削除しました");}).catch(function(e){toast("削除失敗:"+e.message,"err");});
+}
+function clearHistory(){
+  if(!confirm("再生履歴をリセットしますか？")) return;
+  var uid=me.uid,batch=DB.batch();
+  videos.filter(function(v){return v.views>0;}).forEach(function(v){
+    batch.update(DB.collection("users").doc(uid).collection("videos").doc(v.id),{views:0,lastViewed:null});
+  });
+  batch.commit().then(function(){toast("履歴を消去しました");}).catch(function(e){toast("エラー:"+e.message,"err");});
+}
 
+// ── Drag & Drop ───────────────────────────────────────────
 function onDS(e,id){dragId=id;e.currentTarget.classList.add("drag");e.dataTransfer.effectAllowed="move";}
 function onDE(e){e.currentTarget.classList.remove("drag");}
 function onDO(e,id){e.preventDefault();if(dragId!==id)e.currentTarget.classList.add("over");}
@@ -339,7 +534,7 @@ function onDL(e){e.currentTarget.classList.remove("over");}
 function onDrop(e,tid){
   e.preventDefault();e.currentTarget.classList.remove("over");
   if(!dragId||dragId===tid) return;
-  var list=filtered(),si=-1,ti=-1;
+  var list=filteredHome(),si=-1,ti=-1;
   for(var i=0;i<list.length;i++){if(list[i].id===dragId)si=i;if(list[i].id===tid)ti=i;}
   if(si<0||ti<0) return;
   var arr=list.slice(),item=arr.splice(si,1)[0];arr.splice(ti,0,item);
@@ -349,14 +544,32 @@ function onDrop(e,tid){
   dragId=null;
 }
 
-function filtered(){
+// ── Render ────────────────────────────────────────────────
+function filteredHome(){
   var list=videos.slice();
-  if(curF!==null)list=list.filter(function(v){return v.folderId===curF;});
-  if(q)list=list.filter(function(v){return v.title.toLowerCase().indexOf(q)>=0||v.url.toLowerCase().indexOf(q)>=0;});
-  if(sort==="title")list.sort(function(a,b){return a.title.localeCompare(b.title,"ja");});
-  else if(sort==="popular")list.sort(function(a,b){return(b.views||0)-(a.views||0);});
-  else list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
+  if(curF!==null) list=list.filter(function(v){return v.folderId===curF;});
+  if(q) list=list.filter(function(v){return v.title.toLowerCase().indexOf(q)>=0||v.url.toLowerCase().indexOf(q)>=0;});
+  list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
   return list;
+}
+
+function cardHTML(v){
+  var fn="";
+  for(var i=0;i<folders.length;i++){if(folders[i].id===v.folderId){fn=folders[i].name;break;}}
+  var fo='<option value="">📂 未分類</option>';
+  folders.forEach(function(f){fo+='<option value="'+f.id+'"'+(v.folderId===f.id?' selected':'')+'>'+esc(f.name)+'</option>';});
+  var su=v.url.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+  return '<div class="vc" draggable="true" ondragstart="onDS(event,\''+v.id+'\')" ondragend="onDE(event)" ondragover="onDO(event,\''+v.id+'\')" ondragleave="onDL(event)" ondrop="onDrop(event,\''+v.id+'\')">'
+    +'<div class="vb">'
+    +'<div class="vtit" onclick="openVideo(\''+v.id+'\',\''+su+'\')">'+esc(v.title)+'</div>'
+    +'<div class="vact-wrap">'
+    +'<div class="vact">'
+    +'<button class="btn-ed" onclick="editTitle(\''+v.id+'\')">編集</button>'
+    +'<button class="btn-dl" onclick="deleteVideo(\''+v.id+'\')">削除</button>'
+    +'</div>'
+    +'<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'
+    +'</div>'
+    +'</div></div>';
 }
 
 function renderFolders(){
@@ -369,39 +582,79 @@ function renderFolders(){
   h+='<button class="btn-af" onclick="addFolder()">＋ 追加</button>';
   document.getElementById("fl").innerHTML=h;
 }
-
-
-function renderVideos(){
-  var list=filtered();
-  document.getElementById("cbadge").textContent=list.length+"件";
-  var c=document.getElementById("vl");
-  if(!list.length){
-    c.innerHTML='<div class="empty"><div class="empty-ic">🎬</div><p>'+(q?"検索結果がありません":"動画を追加してください")+'</p></div>';
-    return;
-  }
-  var h="";
-  list.forEach(function(v){
-    var fn="";
-    for(var i=0;i<folders.length;i++){if(folders[i].id===v.folderId){fn=folders[i].name;break;}}
-    var fo='<option value="">📂 未分類</option>';
-    folders.forEach(function(f){fo+='<option value="'+f.id+'"'+(v.folderId===f.id?' selected':'')+'>'+esc(f.name)+'</option>';});
-    var su=v.url.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-    h+='<div class="vc" draggable="true" ondragstart="onDS(event,\''+v.id+'\')" ondragend="onDE(event)" ondragover="onDO(event,\''+v.id+'\')" ondragleave="onDL(event)" ondrop="onDrop(event,\''+v.id+'\')">'+
-       '<div class="vb">'+
-       '<div class="vtit" onclick="openVideo(\''+v.id+'\',\''+su+'\')">'+esc(v.title)+'</div>'+
-       '<div class="vact-wrap">'+
-       '<div class="vact">'+
-       '<button class="btn-ed" onclick="editTitle(\''+v.id+'\')">編集</button>'+
-       '<button class="btn-dl" onclick="deleteVideo(\''+v.id+'\')">削除</button>'+
-       '</div>'+
-       '<select class="fsel" onchange="moveFolder(\''+v.id+'\',this.value)">'+fo+'</select>'+
-       '</div>'+
-       '</div></div>';
+function renderFolders2(){
+  var h='<button class="fc'+(curF2===null?' on':'')+'" onclick="selFolder2(null)">すべて ('+videos.length+')</button>';
+  folders.forEach(function(f){
+    var cnt=videos.filter(function(v){return v.folderId===f.id;}).length;
+    h+='<button class="fc'+(curF2===f.id?' on':'')+'" onclick="selFolder2(\''+f.id+'\')">'+esc(f.name)+' ('+cnt+')</button>';
   });
-  c.innerHTML=h;
+  document.getElementById("fl2").innerHTML=h;
 }
 
+function renderVideos(){
+  var list=filteredHome();
+  document.getElementById("cbadge").textContent=list.length+"件";
+  var c=document.getElementById("vl");
+  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🎬</div><p>'+(q?"検索結果がありません":"URLを追加してください")+'</p></div>';return;}
+  c.innerHTML=list.map(cardHTML).join("");
+}
 
+function onSearch(e){ q=e.target.value.toLowerCase();renderVideos(); }
+function onSearch2(e){ q2=e.target.value.toLowerCase();renderSearch(); }
+
+function renderSearch(){
+  var c=document.getElementById("vl2");
+  if(!q2){
+    document.getElementById("cbadge2").textContent="0件";
+    c.innerHTML='<div class="empty"><div class="empty-ic">🔍</div><p>キーワードを入力してください</p></div>';
+    return;
+  }
+  var list=videos.filter(function(v){return v.title.toLowerCase().indexOf(q2)>=0||v.url.toLowerCase().indexOf(q2)>=0;});
+  list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
+  document.getElementById("cbadge2").textContent=list.length+"件";
+  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🔍</div><p>検索結果がありません</p></div>';return;}
+  c.innerHTML=list.map(cardHTML).join("");
+}
+
+function renderBookmark(){
+  renderFolders2();
+  var list=videos.slice();
+  if(curF2!==null) list=list.filter(function(v){return v.folderId===curF2;});
+  list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
+  document.getElementById("cbadge3").textContent=list.length+"件";
+  var c=document.getElementById("bl");
+  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🔖</div><p>ブックマークがありません</p></div>';return;}
+  c.innerHTML=list.map(cardHTML).join("");
+}
+
+function renderHistory(){
+  var list=videos.filter(function(v){return v.views>0;});
+  list.sort(function(a,b){return((b.lastViewed&&b.lastViewed.seconds)||0)-((a.lastViewed&&a.lastViewed.seconds)||0);});
+  var c=document.getElementById("hl");
+  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">🕐</div><p>再生履歴がありません</p></div>';return;}
+  c.innerHTML=list.map(function(v){
+    var su=v.url.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+    return '<div class="hc" onclick="openVideo(\''+v.id+'\',\''+su+'\')"><div class="hc-info"><div class="hc-title">'+esc(v.title)+'</div><div class="hc-url">'+esc(v.url)+'</div></div><div class="hc-cnt"><div class="hc-views">'+(v.views||0)+'</div><div class="hc-label">回視聴</div></div></div>';
+  }).join("");
+}
+
+function renderPlaylist(){
+  var list=videos.slice();
+  list.sort(function(a,b){return((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0);});
+  document.getElementById("cbadge4").textContent=list.length+"件";
+  var c=document.getElementById("hl2");
+  if(!list.length){c.innerHTML='<div class="empty"><div class="empty-ic">📋</div><p>リストがありません</p></div>';return;}
+  c.innerHTML=list.map(cardHTML).join("");
+}
+
+function updateMyPage(){
+  if(!me) return;
+  document.getElementById("my-total").textContent=videos.length;
+  document.getElementById("my-folders").textContent=folders.length;
+  document.getElementById("my-views").textContent=videos.reduce(function(s,v){return s+(v.views||0);},0);
+}
+
+// ── Utilities ─────────────────────────────────────────────
 function guessTitle(url){try{var u=new URL(url);return u.hostname.replace("www.","")+u.pathname;}catch(e){return url;}}
 function isUrl(s){try{new URL(s);return true;}catch(e){return false;}}
 function find(arr,id){for(var i=0;i<arr.length;i++){if(arr[i].id===id)return arr[i];}return null;}
