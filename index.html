@@ -154,24 +154,38 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 </head>
 <body>
 
-<!-- ロゴSVG定義 -->
-<svg style="display:none">
-  <defs>
-    <linearGradient id="gld" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#d4a843;stop-opacity:1"/>
-      <stop offset="100%" style="stop-color:#8b6914;stop-opacity:1"/>
-    </linearGradient>
-  </defs>
-</svg>
+
 
 <!-- AUTH -->
 <div id="s-auth">
   <div class="abox">
     <div class="auth-logo">
-      <svg width="160" height="56" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="72" font-family="Georgia,serif" font-size="72" font-weight="bold" letter-spacing="2" fill="#1a1b2e">PRIVATE</text>
-        <text x="222" y="72" font-family="Georgia,serif" font-size="72" font-weight="bold" letter-spacing="2" fill="url(#gld)">VAULT</text>
-      </svg>
+      <svg width="260" height="80" viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shieldGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a843"/>
+      <stop offset="50%" style="stop-color:#f0cc6a"/>
+      <stop offset="100%" style="stop-color:#8b6914"/>
+    </linearGradient>
+    <linearGradient id="tg2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a843"/>
+      <stop offset="50%" style="stop-color:#f0cc6a"/>
+      <stop offset="100%" style="stop-color:#8b6914"/>
+    </linearGradient>
+  </defs>
+  <!-- 盾 -->
+  <path d="M55,10 L105,10 Q112,10 112,17 L112,70 Q112,106 84,122 L80,124 L76,122 Q48,106 48,70 L48,17 Q48,10 55,10 Z" fill="url(#shieldGrad2)" stroke="#8b6914" stroke-width="2"/>
+  <path d="M57,18 L103,18 Q108,18 108,23 L108,70 Q108,100 80,114 Q52,100 52,70 L52,23 Q52,18 57,18 Z" fill="none" stroke="#f0cc6a" stroke-width="1" opacity="0.5"/>
+  <!-- 鍵穴 -->
+  <circle cx="80" cy="68" r="14" fill="#1a1a1a" stroke="#8b6914" stroke-width="1.5"/>
+  <circle cx="80" cy="68" r="8" fill="none" stroke="#d4a843" stroke-width="2"/>
+  <rect x="75" y="73" width="10" height="18" rx="2" fill="#1a1a1a"/>
+  <rect x="73" y="84" width="14" height="4" rx="1" fill="#d4a843" opacity="0.8"/>
+  <!-- PRIVATE -->
+  <text x="128" y="74" font-family="Georgia,serif" font-size="54" font-weight="bold" letter-spacing="3" fill="#1a1b2e">PRIVATE</text>
+  <!-- VAULT -->
+  <text x="128" y="138" font-family="Georgia,serif" font-size="54" font-weight="bold" letter-spacing="8" fill="url(#tg2)">VAULT</text>
+</svg>
     </div>
     <div class="asub">お気に入りリスト</div>
     <input id="f-em" type="email" placeholder="メールアドレス" autocomplete="email">
@@ -191,10 +205,37 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 <div id="s-app">
   <header class="hd">
     <div class="hd-logo" onclick="switchTab('home')">
-      <svg width="130" height="32" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
-        <text x="0" y="62" font-family="Georgia,serif" font-size="62" font-weight="bold" fill="#1a1b2e">PRIVATE</text>
-        <text x="222" y="62" font-family="Georgia,serif" font-size="62" font-weight="bold" fill="url(#gld)">VAULT</text>
-      </svg>
+      <svg width="180" height="44" viewBox="0 0 360 88" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a843"/>
+      <stop offset="50%" style="stop-color:#f0cc6a"/>
+      <stop offset="100%" style="stop-color:#8b6914"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#c8c8c8"/>
+      <stop offset="40%" style="stop-color:#e8e8e8"/>
+      <stop offset="100%" style="stop-color:#a0a0a0"/>
+    </linearGradient>
+    <linearGradient id="textGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a843"/>
+      <stop offset="40%" style="stop-color:#f0cc6a"/>
+      <stop offset="100%" style="stop-color:#8b6914"/>
+    </linearGradient>
+  </defs>
+  <!-- 盾 -->
+  <path d="M38,6 L68,6 Q72,6 72,10 L72,38 Q72,58 55,68 L53,69 L51,68 Q34,58 34,38 L34,10 Q34,6 38,6 Z" fill="url(#shieldGrad)" stroke="#8b6914" stroke-width="1.5"/>
+  <path d="M40,11 L66,11 Q69,11 69,14 L69,38 Q69,55 53,64 Q37,55 37,38 L37,14 Q37,11 40,11 Z" fill="none" stroke="#f0cc6a" stroke-width="0.8" opacity="0.6"/>
+  <!-- 鍵穴 -->
+  <circle cx="53" cy="36" r="8" fill="#1a1a1a" stroke="#8b6914" stroke-width="1"/>
+  <circle cx="53" cy="36" r="4.5" fill="none" stroke="#d4a843" stroke-width="1.5"/>
+  <rect x="50.5" y="38" width="5" height="9" rx="1" fill="#1a1a1a"/>
+  <rect x="50" y="43" width="7" height="2" rx="0.5" fill="#d4a843" opacity="0.8"/>
+  <!-- PRIVATE テキスト -->
+  <text x="85" y="38" font-family="Georgia,serif" font-size="30" font-weight="bold" letter-spacing="2" fill="#2a2a2a">PRIVATE</text>
+  <!-- VAULT テキスト -->
+  <text x="85" y="72" font-family="Georgia,serif" font-size="30" font-weight="bold" letter-spacing="4" fill="url(#textGrad2)">VAULT</text>
+</svg>
     </div>
     <div class="hd-sp"></div>
   </header>
