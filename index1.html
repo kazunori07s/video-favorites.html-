@@ -1,1 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUREX Splash</title>
 
+<style>
+body {
+  margin: 0;
+  background: #0b0b0b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+/* コンテナ */
+#splash {
+  position: relative;
+  width: 160px;
+  height: 160px;
+}
+
+/* リング */
+.ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-top: 6px solid gold;
+  border-right: 6px solid rgba(255,215,0,0.6);
+  animation: spin 2s linear infinite;
+  opacity: 0;
+  animation-delay: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+/* 内側リング */
+.ring2 {
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  top: 12.5%;
+  left: 12.5%;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  border-bottom: 4px solid rgba(255,215,0,0.8);
+  animation: spinReverse 2.5s linear infinite;
+  opacity: 0;
+  animation-delay: 0.6s;
+  animation-fill-mode: forwards;
+}
+
+/* 再生マーク */
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 0;
+  height: 0;
+  border-left: 28px solid gold;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  opacity: 0;
+  filter: blur(6px);
+  animation: playAppear 0.8s ease-out 1.2s forwards;
+}
+
+/* タイトル */
+.title {
+  position: absolute;
+  bottom: -60px;
+  width: 100%;
+  text-align: center;
+  color: gold;
+  letter-spacing: 3px;
+  font-size: 20px;
+  opacity: 0;
+  animation: fadeIn 1s ease-out 1.6s forwards;
+}
+
+/* アニメーション */
+@keyframes spin {
+  from { transform: rotate(0deg); opacity: 1; }
+  to { transform: rotate(360deg); opacity: 1; }
+}
+
+@keyframes spinReverse {
+  from { transform: rotate(360deg); opacity: 1; }
+  to { transform: rotate(0deg); opacity: 1; }
+}
+
+@keyframes playAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* フェードアウト */
+.fade-out {
+  animation: fadeOut 0.6s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="splash">
+  <div class="ring"></div>
+  <div class="ring2"></div>
+  <div class="play"></div>
+  <div class="title">AUREX</div>
+</div>
+
+<script>
+// 2.5秒後にフェードアウト → 本画面へ
+setTimeout(() => {
+  document.getElementById("splash").classList.add("fade-out");
+  
+  setTimeout(() => {
+    document.body.innerHTML = `
+      <div style="
+        color:white;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        background:#000;
+        font-size:20px;">
+        AUREX ホーム画面
+      </div>
+    `;
+  }, 600);
+
+}, 2600);
+</script>
+
+</body>
+</html>
